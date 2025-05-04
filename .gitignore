@@ -1,0 +1,27 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/MCGalaxy-1.9.5.1/.github
+/MCGalaxy-1.9.5.1/.gitignore
+/MCGalaxy-1.9.5.1/Changelog.txt
+/MCGalaxy-1.9.5.1/CLI
+/MCGalaxy-1.9.5.1/GUI
+/MCGalaxy-1.9.5.1/LibNoise.dll
+/MCGalaxy-1.9.5.1/LICENSE
+/MCGalaxy-1.9.5.1/LICENSE.txt
+/MCGalaxy-1.9.5.1/mcf.sh
+/MCGalaxy-1.9.5.1/MCGalaxy
+/MCGalaxy-1.9.5.1/MySql.Data.dll
+/MCGalaxy-1.9.5.1/Newtonsoft.Json.dll
+/MCGalaxy-1.9.5.1/README.md
+/MCGalaxy-1.9.5.1/sqlite3.dll
+/MCGalaxy-1.9.5.1/sqlite3_x32.dll
+/MCGalaxy-1.9.5.1/sqlite3_x64.dll
+/MCGalaxy-1.9.5.1/System.Data.SQLite.dll
+/MCGalaxy-1.9.5.1/Uploads
+/PVPZone/bin/Debug
+/PVPZone/obj
+/XPPlugin/bin/Debug
+/XPPlugin/obj

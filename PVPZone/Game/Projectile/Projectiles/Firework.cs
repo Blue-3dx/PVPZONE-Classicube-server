@@ -1,8 +1,5 @@
-﻿using MCGalaxy;
-using MCGalaxy.Blocks;
-using MCGalaxy.Maths;
+﻿using MCGalaxy.Maths;
 using PVPZone.Game.Player;
-using System;
 
 namespace PVPZone.Game.Projectile.Projectiles
 {
@@ -20,11 +17,14 @@ namespace PVPZone.Game.Projectile.Projectiles
             Vec3U16 blockPos = Util.Round(Position);
             Util.Effect(Level, effects[rnd.Next(0, effects.Length - 1)], blockPos.X, blockPos.Y, blockPos.Z);
         }
+        public override void OnCreation()
+        {
+            this.Velocity = new Vec3F32(0, 2f, 0);
+        }
         public Firework() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base (level, Position, Velocity, Thrower)
         {
             BlockId = 483;
             Gravity = 0f;
-            Velocity = new Vec3F32(0f, 2f, 0f);
         }
     }
 }

@@ -5,15 +5,15 @@ namespace PVPZone
 {
     public class PVPZoneConfig_Player
     {
-        public int MaxHealth = 20;
+        public int MaxHealth = 10;
 
-        public int MaxHealthGolden = 20;
+        public int MaxHealthGolden = 10;
 
-        public int MaxHunger = 20;
+        public int MaxHunger = 10;
 
-        public int DefaultHealth = 20;
+        public int DefaultHealth = 10;
 
-        public int HungerExhausted = 10;
+        public int HungerExhausted = 4;
         public int HungerStarving = 0;
 
         public int HungerDecayInterval = 60;
@@ -33,7 +33,7 @@ namespace PVPZone
             [DamageReason.DamageType.None] = new string[] { "{vicColor}{vicName} %fdied a %emysterious %fdeath!" },
             [DamageReason.DamageType.Fall] = new string[] { "{vicColor}{vicName} %efell %fto their death!" },
             [DamageReason.DamageType.Punch] = new string[] { 
-                "{vicColor}{vicName} %fwas %ebeaten to a pulp%fby {atkColor}{atkName}%f!", 
+                "{vicColor}{vicName} %fwas %ebeaten to a pulp %fby {atkColor}{atkName}%f!", 
                 "{vicColor}{vicName} %fstood no chance in a fist fight against {atkColor}{atkName}%f!" 
             },
             [DamageReason.DamageType.Arrow] = new string[] {
@@ -45,7 +45,9 @@ namespace PVPZone
             [DamageReason.DamageType.Explosion] = new string[] {
                 "{vicColor}{vicName} %fwas %eblown to pieces %fby {atkColor}{atkName}%f!",
             },
-           
+            [DamageReason.DamageType.Frozen] = new string[] {
+                "{vicColor}{vicName} %fwas %frozen to death %fby {atkColor}{atkName}%f!",
+            },
 
         };
     }

@@ -37,7 +37,7 @@ namespace PVPZone.Game.Item
 
             [(ushort)PVPZoneItems.Firework] = new PVPZone.Game.Item.Weapon.Ranged.Firework((ushort)PVPZoneItems.Firework, textureId: 286, "Firework"),
 
-            [(ushort)PVPZoneItems.BlastBall] = new PVPZone.Game.Item.Weapon.Ranged.BlastBall((ushort)PVPZoneItems.BlastBall, textureId: 229, "Blast Ball"),
+            [(ushort)PVPZoneItems.BlastBall] = new PVPZone.Game.Item.Weapon.Ranged.BlastBall((ushort)PVPZoneItems.BlastBall, textureId: 299, "Blast Ball"),
 
             [(ushort)PVPZoneItems.IceBomb] = new PVPZone.Game.Item.Weapon.Ranged.Icebomb((ushort)PVPZoneItems.IceBomb, textureId: 285, "Ice Bomb"),
 

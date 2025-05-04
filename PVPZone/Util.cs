@@ -22,6 +22,14 @@ namespace PVPZone
             }
             return null;
         }
+        public static MCGalaxy.Player PlayerAt(MCGalaxy.Player player, int x, int y, int z)
+        {
+            return PlayerAt(player, new Vec3U16((ushort)x, (ushort)y, (ushort)z));
+        }
+        public static MCGalaxy.Player PlayerAt(MCGalaxy.Player player, ushort x, ushort y, ushort z)
+        {
+            return PlayerAt(player, new Vec3U16((ushort)x, (ushort)y, (ushort)z));
+        }
         public static MCGalaxy.Player PlayerFrom(byte id)
         {
             foreach (MCGalaxy.Player pl in PlayerInfo.Online.Items)

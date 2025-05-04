@@ -19,6 +19,7 @@ namespace PVPZone.Game.Player
             MCGalaxy.Events.PlayerEvents.OnPlayerSpawningEvent.Register(PlayerSpawn, MCGalaxy.Priority.Normal);
             MCGalaxy.Events.PlayerEvents.OnPlayerDiedEvent.Register(PlayerDie, MCGalaxy.Priority.Normal);
             MCGalaxy.Events.PlayerEvents.OnSentMapEvent.Register(PlayerSentMap, MCGalaxy.Priority.Normal);
+
             Task = Server.MainScheduler.QueueRepeat(PlayerTick, null, TimeSpan.FromMilliseconds(100));
         }
         public static void Unload()
@@ -69,6 +70,7 @@ namespace PVPZone.Game.Player
             if (button == MouseButton.Right && act == MouseAction.Pressed)
             {
                 pl.UseItem();
+                return;
             }
         }
         private static void SendMiningUnbreakableMessage(MCGalaxy.Player p)

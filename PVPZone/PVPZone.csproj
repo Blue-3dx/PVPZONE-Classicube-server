@@ -57,6 +57,7 @@
     <Compile Include="Game\Item\Weapon\Ranged\EnderPearl.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Windcharge.cs" />
     <Compile Include="Game\Map\LootManager.cs" />
+    <Compile Include="Game\Player\CurseManager.cs" />
     <Compile Include="Game\Player\DamageReason.cs" />
     <Compile Include="Game\Player\PlayerManager.cs" />
     <Compile Include="Game\Projectile\Projectile.cs" />

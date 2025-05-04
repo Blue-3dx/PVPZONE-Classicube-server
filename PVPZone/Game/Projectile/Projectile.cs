@@ -1,5 +1,6 @@
 ﻿using MCGalaxy;
 using MCGalaxy.DB;
+using MCGalaxy.Games;
 using MCGalaxy.Maths;
 using PVPZone.Game.Player;
 
@@ -56,6 +57,8 @@ namespace PVPZone.Game.Projectile
 
             Level.BroadcastChange(blockPos.X, blockPos.Y, blockPos.Z, BlockId);
 
+            PositionLast = blockPos;
+
             Position += Velocity;
 
             Velocity.X *= Drag;
@@ -65,6 +68,10 @@ namespace PVPZone.Game.Projectile
             Velocity.Y -= Gravity;
 
             return true;
+
+        }
+        public virtual void OnCreation()
+        {
 
         }
         public Projectile()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower=null)
@@ -88,6 +95,7 @@ namespace PVPZone.Game.Projectile
             projectile.Thrower = thrower;
           
             ProjectileManager.ProjectileAdd(projectile);
+            projectile.OnCreation();
         }
 
     }

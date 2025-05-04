@@ -23,6 +23,7 @@ namespace PVPZone.Game.Item
 
         public virtual bool Use(PVPPlayer player)
         {
+
             if (XPLevelRequired > 0 && XPPlugin.GetLevel(player.MCGalaxyPlayer) < XPLevelRequired)
             {
                 player.MCGalaxyPlayer.Message(MCGalaxy.PVPZone.Config.Item.XPMessage.Replace("{xp}", XPLevelRequired.ToString()));

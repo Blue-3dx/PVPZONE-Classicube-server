@@ -1,4 +1,5 @@
-﻿using PVPZone.Game.Item;
+﻿using MCGalaxy;
+using PVPZone.Game.Item;
 using PVPZone.Game.Player;
 using PVPZone.Game.Projectile;
 
@@ -11,12 +12,14 @@ namespace PVPZone.Game
             PlayerManager.Load();
             ProjectileManager.Load();
             ItemManager.Load();
+            CurseManager.Load();
         }
         public static void Unload()
         {
             PlayerManager.Unload();
             ProjectileManager.Unload();
             ItemManager.Unload();
+            CurseManager.Unload();
         }
     }
 }

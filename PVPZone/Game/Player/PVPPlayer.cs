@@ -1,12 +1,10 @@
 ﻿using MCGalaxy;
-using MCGalaxy.Games;
 using MCGalaxy.Maths;
 using MCGalaxy.Network;
 using PVPZone.Game.Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Concurrent;
 
 namespace PVPZone.Game.Player
 {
@@ -39,12 +37,16 @@ namespace PVPZone.Game.Player
 
         public ushort HeldBlock { get {
 
-                ushort heldBlock = MCGalaxyPlayer.ClientHeldBlock;
+                if (Dead)
+                    return 0;
 
+                ushort heldBlock = MCGalaxyPlayer.GetHeldBlock();
+                if (heldBlock > 256)
+                    heldBlock = (ushort)(heldBlock - 256);
                 if (!Inventory.Has(heldBlock))
                     return 0;
 
-                return MCGalaxyPlayer.ClientHeldBlock;
+                return heldBlock;
             } }
         public PVPZoneItem HeldItem { get
             {
@@ -215,6 +217,9 @@ namespace PVPZone.Game.Player
 
         public void Damage(DamageReason damageHandler)
         {
+            if (Dead)
+                return;
+
             if (HealthGolden > 0)
             {
                 HealthGolden -= damageHandler.Amount;
@@ -269,6 +274,9 @@ namespace PVPZone.Game.Player
         }
         public void Knockback(float dx, float dy, float dz, float power = 1)
         {
+            if (Dead)
+                return;
+
             if (!MCGalaxyPlayer.Supports(CpeExt.VelocityControl))
                 return;
 
@@ -280,6 +288,7 @@ namespace PVPZone.Game.Player
             GuiHealth();
             GuiHealthExtra();
             GuiHunger();
+            GuiHeldBlock();
         }
         public void GuiHealth()
         {
@@ -287,15 +296,24 @@ namespace PVPZone.Game.Player
         }
         public void GuiHealthExtra()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight1, Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden));
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden));
         }
         public void GuiHunger()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight1, Util.HealthBar("←", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHunger));
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight3, Util.HealthBar("←", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHunger));
         }
-
+        public void GuiHeldBlock()
+        {
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.Status1, Inventory.Get(HeldBlock) == 0 ? "" :  Inventory.Get(MCGalaxyPlayer.ClientHeldBlock).ToString());
+        }
+        ushort lastHeldBlock = 0;
         public void Think()
         {
+            if (lastHeldBlock != HeldBlock)
+            {
+                lastHeldBlock = HeldBlock;
+                GuiHeldBlock();
+            }
             if (DateTime.Now > nextHunger)
             {
                 if (Hunger > 0)

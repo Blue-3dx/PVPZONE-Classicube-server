@@ -16,7 +16,7 @@ namespace PVPZone.Game.Projectile.Projectiles
             }
             player.Damage(new DamageReason(DamageReason.DamageType.Arrow, 1, player, this.Thrower));
 
-            player.Knockback(-this.Velocity.X, 5f, -this.Velocity.Z, 15f);
+            player.Knockback(this.Velocity.X, 2.5f, this.Velocity.Z, 1f);
 
             player.DamageEffect();
             //this.Thrower.MCGalaxyPlayer.Pos = new Position((int)Position.X, (int)Position.Y + 1, (int)Position.Z);

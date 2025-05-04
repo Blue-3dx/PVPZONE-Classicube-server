@@ -21,6 +21,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         {
             this.RemoveOnUse = true;
             this.XPLevelRequired = 10;
+            this.Cooldowntime = 3;
         }
     }
 }

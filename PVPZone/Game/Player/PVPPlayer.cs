@@ -102,17 +102,10 @@ namespace PVPZone.Game.Player
             Hunger = 0;
             Inventory.Clear();
 
-            MCGalaxyPlayer.HandleDeath(4, immediate: true);
+            if (deathMessage == "" && damageHandler != null)
+                deathMessage = DamageReason.GetDeathString(damageHandler);
 
-            if (deathMessage != "")
-            {
-                Util.BroadcastMessage(MCGalaxyPlayer.level, deathMessage);
-                return;
-            }
-
-            if (damageHandler == null) return;
-
-            Util.BroadcastMessage(MCGalaxyPlayer.level, DamageReason.GetDeathString(damageHandler));
+            MCGalaxyPlayer.HandleDeath(4, immediate: true, customMsg: deathMessage);
         }
         public void OnDeath()
         {

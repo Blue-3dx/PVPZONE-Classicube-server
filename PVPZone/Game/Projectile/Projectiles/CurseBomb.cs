@@ -17,7 +17,7 @@ namespace PVPZone.Game.Projectile.Projectiles
             }
             player.Curse();
 
-            player.Knockback(-this.Velocity.X, 2f, -this.Velocity.Z, 1.5f);
+            player.Knockback(this.Velocity.X, 2f, this.Velocity.Z, 1.5f);
 
             player.DamageEffect();
         }

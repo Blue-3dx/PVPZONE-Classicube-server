@@ -14,7 +14,7 @@ namespace PVPZone.Game.Projectile.Projectiles
                 // Do nothing if the player has the "shieldb3" model
                 return;
             }
-            player.Knockback(-this.Velocity.X, 2f, -this.Velocity.Z, 5f);
+            player.Knockback(this.Velocity.X, 2f, this.Velocity.Z, 5f);
             //this.Thrower.MCGalaxyPlayer.Pos = new Position((int)Position.X, (int)Position.Y + 1, (int)Position.Z);
         }
         public WindCharge() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base(level, Position, Velocity, Thrower)

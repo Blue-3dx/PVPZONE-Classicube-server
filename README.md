@@ -7,3 +7,9 @@ Source For The Server PVPZone!
 - Extra Health System (Golden Apple)
 - Several Items
 - And More ;)
+
+
+
+Happy PVP :D
+
+-Blue 3dx

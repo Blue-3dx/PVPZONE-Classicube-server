@@ -11,9 +11,10 @@ namespace PVPZone.Game.Item
             None = 0,
             Enderpearl = 128,
             Firework = 483,
-            FireworkMissile = 501,
+            BlastBall = 501,
             IceBomb = 489, 
-            Arrow = 156,
+            Bow = 156,
+            Arrow = 147,
             WindCharge = 95,
             CurseBomb = 486,
             Snowball = 488,
@@ -28,27 +29,28 @@ namespace PVPZone.Game.Item
 
         public static Dictionary<ushort, PVPZoneItem> Items = new Dictionary<ushort, PVPZoneItem>()
         {
-            [(ushort)PVPZoneItems.Enderpearl] = new PVPZone.Game.Item.Weapon.Ranged.EnderPearl((ushort)PVPZoneItems.Enderpearl),
+            [(ushort)PVPZoneItems.Enderpearl] = new PVPZone.Game.Item.Weapon.Ranged.EnderPearl((ushort)PVPZoneItems.Enderpearl, textureId:216, "Ender Pearl"),
 
-            [(ushort)PVPZoneItems.CurseBomb] = new PVPZone.Game.Item.Weapon.Ranged.CurseBomb((ushort)PVPZoneItems.CurseBomb),
+            [(ushort)PVPZoneItems.CurseBomb] = new PVPZone.Game.Item.Weapon.Ranged.CurseBomb((ushort)PVPZoneItems.CurseBomb, textureId: 284, "Curse Potion"),
 
-            [(ushort)PVPZoneItems.Snowball] = new PVPZone.Game.Item.Weapon.Ranged.Snowball((ushort)PVPZoneItems.Snowball),
+            [(ushort)PVPZoneItems.Snowball] = new PVPZone.Game.Item.Weapon.Ranged.Snowball((ushort)PVPZoneItems.Snowball, textureId: 233, "Snowball"),
 
-            [(ushort)PVPZoneItems.Firework] = new PVPZone.Game.Item.Weapon.Ranged.Firework((ushort)PVPZoneItems.Firework),
+            [(ushort)PVPZoneItems.Firework] = new PVPZone.Game.Item.Weapon.Ranged.Firework((ushort)PVPZoneItems.Firework, textureId: 286, "Firework"),
 
-            [(ushort)PVPZoneItems.FireworkMissile] = new PVPZone.Game.Item.Weapon.Ranged.FireworkMissile((ushort)PVPZoneItems.FireworkMissile),
+            [(ushort)PVPZoneItems.BlastBall] = new PVPZone.Game.Item.Weapon.Ranged.BlastBall((ushort)PVPZoneItems.BlastBall, textureId: 229, "Blast Ball"),
 
-            [(ushort)PVPZoneItems.IceBomb] = new PVPZone.Game.Item.Weapon.Ranged.Icebomb((ushort)PVPZoneItems.IceBomb),
+            [(ushort)PVPZoneItems.IceBomb] = new PVPZone.Game.Item.Weapon.Ranged.Icebomb((ushort)PVPZoneItems.IceBomb, textureId: 285, "Ice Bomb"),
 
-            [(ushort)PVPZoneItems.WindCharge] = new PVPZone.Game.Item.Weapon.Ranged.Windcharge((ushort)PVPZoneItems.WindCharge),
+            [(ushort)PVPZoneItems.WindCharge] = new PVPZone.Game.Item.Weapon.Ranged.Windcharge((ushort)PVPZoneItems.WindCharge, textureId: 438, "Wind Charge"),
 
-            [(ushort)PVPZoneItems.Arrow] = new PVPZone.Game.Item.Weapon.Ranged.Arrow((ushort)PVPZoneItems.Arrow),
+            [(ushort)PVPZoneItems.Bow] = new PVPZone.Game.Item.Weapon.Ranged.Bow((ushort)PVPZoneItems.Bow, textureId: 223, "Bow"),
+            [(ushort)PVPZoneItems.Arrow] = new PVPZone.Game.Item.Weapon.Ranged.Bow((ushort)PVPZoneItems.Arrow, textureId: 239, "Arrow"),
 
-            [(ushort)PVPZoneItems.GoldenApple] = new PVPZone.Game.Item.Weapon.Ranged.GoldenApple((ushort)PVPZoneItems.GoldenApple),
-            [(ushort)PVPZoneItems.Food1] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food1),
-            [(ushort)PVPZoneItems.Food2] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food2),
-            [(ushort)PVPZoneItems.Food3] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food3),
-            [(ushort)PVPZoneItems.Food4] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food4),
+            [(ushort)PVPZoneItems.GoldenApple] = new PVPZone.Game.Item.Weapon.Ranged.GoldenApple((ushort)PVPZoneItems.GoldenApple, textureId: 366, "Golden Apple"),
+            [(ushort)PVPZoneItems.Food1] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food1, textureId: 201, "Cookie"),
+            [(ushort)PVPZoneItems.Food2] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food2, textureId: 214, "Raw Beef"),
+            [(ushort)PVPZoneItems.Food3] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food3, textureId: 215, "Steak"),
+            [(ushort)PVPZoneItems.Food4] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food4, textureId: 229, "Apple"),
         };
         
         public static void Cooldown(PVPPlayer player, ushort BlockId, float duration)

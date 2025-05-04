@@ -48,9 +48,10 @@
     <Compile Include="Game\Item\Aid\Food.cs" />
     <Compile Include="Game\Item\Aid\GoldenApple.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Arrow.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Bow.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\CurseBomb.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Firework.cs" />
-    <Compile Include="Game\Item\Weapon\Ranged\FireworkMissile.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\BlastBall.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Icebomb.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Snowball.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\EnderPearl.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="Game\Player\PVPPlayerInventory.cs" />
     <Compile Include="Game\Projectile\Projectiles\CurseBomb.cs" />
     <Compile Include="Game\Projectile\Projectiles\Firework.cs" />
-    <Compile Include="Game\Projectile\Projectiles\FireworkMissile.cs" />
+    <Compile Include="Game\Projectile\Projectiles\BlastBall.cs" />
     <Compile Include="Game\Projectile\Projectiles\Snowball.cs" />
     <Compile Include="Game\Projectile\Projectiles\Arrow.cs" />
     <Compile Include="Game\Projectile\Projectiles\Icebomb.cs" />

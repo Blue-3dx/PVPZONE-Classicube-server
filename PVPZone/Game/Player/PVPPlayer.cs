@@ -71,12 +71,26 @@ namespace PVPZone.Game.Player
         {
             Inventory.SendInventoryOrder();
             Inventory.Clear();
+
             Health = MCGalaxy.PVPZone.Config.Player.DefaultHealth;
             HealthGolden = 0;
             Hunger = MCGalaxy.PVPZone.Config.Player.MaxHunger;
+
             nextHunger = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerDecayInterval);
             nextStarve = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerStarveInterval);
+
             SendGui();
+
+            //Testing
+            Inventory.Add(ItemManager.PVPZoneItems.BlastBall, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.Firework, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.Food1, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.IceBomb,50);
+            Inventory.Add(ItemManager.PVPZoneItems.Bow, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.Arrow, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.CurseBomb, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.WindCharge, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.Snowball, 50);
         }
 
         public void Die(DamageReason damageHandler=null, string deathMessage = "")

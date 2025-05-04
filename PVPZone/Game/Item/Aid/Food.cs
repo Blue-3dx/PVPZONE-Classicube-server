@@ -15,7 +15,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
 
         }
 
-        public Food(ushort id, ushort textureId = 0) : base(id, textureId)
+        public Food(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)
         {
             this.RemoveOnUse = true;
             this.XPLevelRequired = 10;

@@ -2,13 +2,13 @@
 
 namespace PVPZone.Game.Item.Weapon.Ranged
 {
-    public class FireworkMissile : PVPZoneItem
+    public class Bow : PVPZoneItem
     {
         public override bool Use(PVPPlayer player)
         {
             if (!base.Use(player)) return false;
 
-            Projectile.Projectile.Throw(new Projectile.Projectiles.FireworkMissile(), player, 2f);
+            Projectile.Projectile.Throw(new Projectile.Projectiles.Arrow(), player, 2f);
 
             return true;
         }
@@ -17,7 +17,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
 
         }
 
-        public FireworkMissile(ushort id, ushort textureId = 0) : base(id, textureId)
+        public Bow(ushort id, ushort textureId = 0, string Name="") : base(id, textureId, Name)
         {
             this.RemoveOnUse = true;
             this.XPLevelRequired = 10;

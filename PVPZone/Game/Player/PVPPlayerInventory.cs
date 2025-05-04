@@ -2,6 +2,7 @@
 using MCGalaxy;
 using System;
 using System.Collections.Generic;
+using PVPZone.Game.Item;
 namespace PVPZone.Game.Player
 {
     public class PVPPlayerInventory
@@ -43,7 +44,10 @@ namespace PVPZone.Game.Player
 
             Inventory[blockId] -= amount;
         }
-
+        public void Add(ItemManager.PVPZoneItems item, int amount = 1)
+        {
+            Add((ushort)item, amount);
+        }
         public void Add(ushort blockId, int amount = 1)
         {
             if (amount < 0)

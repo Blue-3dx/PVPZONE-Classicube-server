@@ -6,21 +6,21 @@ namespace PVPZone.Game.Item.Weapon.Ranged
     {
         public override bool Use(PVPPlayer player)
         {
-            if (!base.Use(player)) return false;
+            return false;
+ /*               if (!base.Use(player)) return false;
 
-            Projectile.Projectile.Throw(new Projectile.Projectiles.Arrow(), player, 2f);
 
-            return true;
+                return true;*/
         }
         public override void OnHit(PVPPlayer attacker, PVPPlayer victim)
         {
 
         }
 
-        public Arrow(ushort id, ushort textureId = 0) : base(id, textureId)
+        public Arrow(ushort id, ushort textureId = 0, string Name="") : base(id, textureId, Name)
         {
-            this.RemoveOnUse = true;
-            this.XPLevelRequired = 10;
+            this.RemoveOnUse = false;
+            this.XPLevelRequired = 0;
         }
     }
 }

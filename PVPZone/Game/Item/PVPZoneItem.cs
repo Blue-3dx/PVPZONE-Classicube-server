@@ -1,6 +1,7 @@
 ﻿using MCGalaxy;
 using PVPZone.Game.Player;
 using System;
+using System.Xml.Linq;
 
 namespace PVPZone.Game.Item
 {
@@ -58,10 +59,33 @@ namespace PVPZone.Game.Item
 
         }
 
-        public PVPZoneItem(ushort id, ushort textureId = 0)
+        public PVPZoneItem(ushort id, ushort textureId = 0, string Name = "")
         {
             Block_BlockId = id;
             Block_TextureId = textureId;
+
+            if (textureId == 0 || Name == "")
+                return;
+
+            BlockDefinition def = new BlockDefinition();
+            def.RawID = Block_BlockId; def.Name = Name;
+            def.Speed = 1; def.CollideType = 0;
+            def.TopTex = textureId; def.BottomTex = textureId;
+
+            def.BlocksLight = false; def.WalkSound = 1;
+            def.FullBright = false; def.Shape = 0;
+            def.BlockDraw = 2; def.FallBack = 5;
+
+            def.FogDensity = 0;
+            def.FogR = 0; def.FogG = 0; def.FogB = 0;
+            def.MinX = 0; def.MinY = 0; def.MinZ = 0;
+            def.MaxX = 0; def.MaxY = 0; def.MaxZ = 0;
+
+            def.LeftTex = textureId; def.RightTex = textureId;
+            def.FrontTex = textureId; def.BackTex = textureId;
+            def.InventoryOrder = -1;
+            BlockDefinition.Add(def, BlockDefinition.GlobalDefs, null);
+            
         }
 
     }

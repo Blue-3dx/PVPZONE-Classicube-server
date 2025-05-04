@@ -95,13 +95,12 @@ namespace PVPZone.Game.Player
 
         public void Die(DamageReason damageHandler=null, string deathMessage = "")
         {
-            MCGalaxyPlayer.HandleDeath(4, immediate: true);
             Health = 0;
             HealthGolden = 0;
             Hunger = 0;
             Inventory.Clear();
 
-            SendGui();
+            MCGalaxyPlayer.HandleDeath(4, immediate: true);
 
             if (deathMessage != "")
             {
@@ -112,6 +111,15 @@ namespace PVPZone.Game.Player
             if (damageHandler == null) return;
 
             Util.BroadcastMessage(MCGalaxyPlayer.level, DamageReason.GetDeathString(damageHandler));
+        }
+        public void OnDeath()
+        {
+            Health = 0;
+            HealthGolden = 0;
+            Hunger = 0;
+            Inventory.Clear();
+
+            SendGui();
         }
         public void Curse()//(string curse="Slowness")
         {

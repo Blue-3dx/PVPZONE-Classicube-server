@@ -187,7 +187,8 @@ namespace PVPZone.Game.Player
 
             pvpVictim.Damage(new DamageReason(DamageReason.DamageType.Punch, damage, pvpVictim, this));
 
-            HeldItem.OnHit(this, pvpVictim);
+            if (HeldItem != null)
+                HeldItem.OnHit(this, pvpVictim);
 
             if (pvpVictim.Dead)
                 return;

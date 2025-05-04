@@ -1,6 +1,7 @@
 ﻿using MCGalaxy;
 using MCGalaxy.DB;
 using MCGalaxy.Events.PlayerEvents;
+using MCGalaxy.Network;
 using MCGalaxy.Tasks;
 using PVPZone.Game.Item;
 using System;
@@ -17,6 +18,7 @@ namespace PVPZone.Game.Player
             MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Register(PlayerClick, MCGalaxy.Priority.Normal);
             MCGalaxy.Events.PlayerEvents.OnPlayerSpawningEvent.Register(PlayerSpawn, MCGalaxy.Priority.Normal);
             MCGalaxy.Events.PlayerEvents.OnPlayerDiedEvent.Register(PlayerDie, MCGalaxy.Priority.Normal);
+            MCGalaxy.Events.PlayerEvents.OnSentMapEvent.Register(PlayerSentMap, MCGalaxy.Priority.Normal);
             Task = Server.MainScheduler.QueueRepeat(PlayerTick, null, TimeSpan.FromMilliseconds(100));
         }
         public static void Unload()
@@ -26,6 +28,7 @@ namespace PVPZone.Game.Player
             MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Unregister(PlayerClick);
             MCGalaxy.Events.PlayerEvents.OnPlayerSpawningEvent.Unregister(PlayerSpawn);
             MCGalaxy.Events.PlayerEvents.OnPlayerDiedEvent.Unregister(PlayerDie);
+            MCGalaxy.Events.PlayerEvents.OnSentMapEvent.Unregister(PlayerSentMap);
             Server.MainScheduler.Cancel(Task);
         }
 
@@ -68,7 +71,27 @@ namespace PVPZone.Game.Player
                 pl.UseItem();
             }
         }
+        private static void SendMiningUnbreakableMessage(MCGalaxy.Player p)
+        {
 
+            bool extBlocks = p.Session.hasExtBlocks;
+            int count = p.Session.MaxRawBlock + 1;
+            int size = extBlocks ? 5 : 4;
+            byte[] bulk = new byte[count * size];
+            Level level = p.level;
+            for (int i = 0; i < count; i++)
+            {
+                bool canPlace = p.Game.Referee;
+                bool canBreak = p.Game.Referee;
+          
+                Packet.WriteBlockPermission((BlockID)i, i != 0 ? canPlace : true, i == 0 ? true : canBreak, p.Session.hasExtBlocks, bulk, i * size);
+            }
+            p.Send(bulk);
+        }
+        private static void PlayerSentMap(MCGalaxy.Player p, Level prevLevel, Level level)
+        {
+            SendMiningUnbreakableMessage(p);
+        }
         private static void PlayerTick(SchedulerTask task)
         {
             Task = task;

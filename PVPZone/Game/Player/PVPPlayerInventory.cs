@@ -1,6 +1,5 @@
 ﻿using MCGalaxy.Network;
 using MCGalaxy;
-using System;
 using System.Collections.Generic;
 using PVPZone.Game.Item;
 namespace PVPZone.Game.Player
@@ -22,7 +21,7 @@ namespace PVPZone.Game.Player
             ushort x = 1;
             for (ushort i = 0; i < 767; i++)
             {
-                if (!Has(i))
+                if (!Has(i) && !pl.MCGalaxyPlayer.Game.Referee)
                 {
                     pl.MCGalaxyPlayer.Send(Packet.SetInventoryOrder(Block.Air, i, pl.MCGalaxyPlayer.Session.hasExtBlocks));
                     continue;

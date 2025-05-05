@@ -39,6 +39,7 @@ namespace PVPZone.Game.Player
             {
                 Inventory.Remove(blockId);
                 SendInventoryOrder();
+                return;
             }
 
             Inventory[blockId] -= amount;

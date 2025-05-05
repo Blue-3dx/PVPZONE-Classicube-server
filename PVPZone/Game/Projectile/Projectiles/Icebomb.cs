@@ -10,11 +10,6 @@ namespace PVPZone.Game.Projectile.Projectiles
         {
             Vec3U16 BlockPosition = Util.Round(Position);
             SpawnIceCube(Level, BlockPosition.X, BlockPosition.Y-1, BlockPosition.Z);
-
-            if (player == null)
-                return;
-
-            player.Damage(new DamageReason(DamageReason.DamageType.Frozen, 20, player, Thrower));
         }
         private void SpawnIceCube(Level lvl, int cx, int cy, int cz)
         {

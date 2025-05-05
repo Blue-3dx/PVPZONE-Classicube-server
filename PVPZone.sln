@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVPZone", "PVPZone\PVPZone.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCGalaxy_", "MCGalaxy-1.9.5.1\MCGalaxy\MCGalaxy_.csproj", "{12597DB0-7C34-4DE1-88EA-9250FF3372EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPPlugin", "XPPlugin\XPPlugin.csproj", "{5B3AF402-87E7-44D1-A4D6-6B0CEF7D8C9A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{12597DB0-7C34-4DE1-88EA-9250FF3372EB}.Debug|Any CPU.Build.0 = Debug|x86
 		{12597DB0-7C34-4DE1-88EA-9250FF3372EB}.Release|Any CPU.ActiveCfg = Release|x86
 		{12597DB0-7C34-4DE1-88EA-9250FF3372EB}.Release|Any CPU.Build.0 = Release|x86
-		{5B3AF402-87E7-44D1-A4D6-6B0CEF7D8C9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B3AF402-87E7-44D1-A4D6-6B0CEF7D8C9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B3AF402-87E7-44D1-A4D6-6B0CEF7D8C9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B3AF402-87E7-44D1-A4D6-6B0CEF7D8C9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

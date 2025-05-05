@@ -1,6 +1,4 @@
-﻿using MCGalaxy;
-using MCGalaxy.Maths;
-using PVPZone.Game.Player;
+﻿using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile.Projectiles
 {
@@ -14,7 +12,7 @@ namespace PVPZone.Game.Projectile.Projectiles
                 // Do nothing if the player has the "shieldb3" model
                 return;
             }
-            player.Damage(new DamageReason(DamageReason.DamageType.Arrow, 1, player, this.Thrower));
+            player.Damage(new DamageReason(DamageReason.DamageType.Snowball, 1, player, this.Thrower));
 
             player.Knockback(this.Velocity.X, 2.5f, this.Velocity.Z, 1f);
 
@@ -23,7 +21,7 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         public Snowball() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base(level, Position, Velocity, Thrower)
         {
-            BlockId = 488;
+            BlockId = 256 + 488;
         }
     }
 }

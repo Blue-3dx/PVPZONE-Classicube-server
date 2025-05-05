@@ -44,7 +44,7 @@ namespace PVPZone.Game.Item
             [(ushort)PVPZoneItems.WindCharge] = new PVPZone.Game.Item.Weapon.Ranged.Windcharge((ushort)PVPZoneItems.WindCharge, textureId: 438, "Wind Charge"),
 
             [(ushort)PVPZoneItems.Bow] = new PVPZone.Game.Item.Weapon.Ranged.Bow((ushort)PVPZoneItems.Bow, textureId: 223, "Bow"),
-            [(ushort)PVPZoneItems.Arrow] = new PVPZone.Game.Item.Weapon.Ranged.Bow((ushort)PVPZoneItems.Arrow, textureId: 239, "Arrow"),
+            [(ushort)PVPZoneItems.Arrow] = new PVPZone.Game.Item.Weapon.Ranged.Arrow((ushort)PVPZoneItems.Arrow, textureId: 239, "Arrow"),
 
             [(ushort)PVPZoneItems.GoldenApple] = new PVPZone.Game.Item.Weapon.Ranged.GoldenApple((ushort)PVPZoneItems.GoldenApple, textureId: 366, "Golden Apple"),
             [(ushort)PVPZoneItems.Food1] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food1, textureId: 201, "Cookie"),

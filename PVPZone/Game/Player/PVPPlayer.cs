@@ -31,6 +31,9 @@ namespace PVPZone.Game.Player
         public bool Exhausted { get { return Hunger < MCGalaxy.PVPZone.Config.Player.HungerExhausted; } }
         public bool Starving { get { return Health <= MCGalaxy.PVPZone.Config.Player.HungerStarving; } }
 
+        public uint XP { get { return XPSystem.GetXP(MCGalaxyPlayer); } }
+        public uint XPLevel { get { return XPSystem.GetXP(MCGalaxyPlayer); } }
+
         DateTime nextHunger = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerDecayInterval);
         DateTime nextStarve = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerStarveInterval);
         DateTime nextHeal = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HealInterval);
@@ -73,6 +76,8 @@ namespace PVPZone.Game.Player
         {
             Inventory.SendInventoryOrder();
             Inventory.Clear();
+            Util.ClearHotbar(MCGalaxyPlayer);
+
 
             Health = MCGalaxy.PVPZone.Config.Player.DefaultHealth;
             HealthGolden = 0;
@@ -93,6 +98,7 @@ namespace PVPZone.Game.Player
             Inventory.Add(ItemManager.PVPZoneItems.CurseBomb, 50);
             Inventory.Add(ItemManager.PVPZoneItems.WindCharge, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Snowball, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.Enderpearl, 50);
         }
 
         public void Die(DamageReason damageHandler=null, string deathMessage = "")
@@ -101,11 +107,17 @@ namespace PVPZone.Game.Player
             HealthGolden = 0;
             Hunger = 0;
             Inventory.Clear();
+            Util.ClearHotbar(MCGalaxyPlayer);
 
             if (deathMessage == "" && damageHandler != null)
                 deathMessage = DamageReason.GetDeathString(damageHandler);
 
             MCGalaxyPlayer.HandleDeath(4, immediate: true, customMsg: deathMessage);
+
+            if (damageHandler != null && damageHandler.Attacker != null)
+                XPSystem.ExpUp(damageHandler.Attacker.MCGalaxyPlayer, MCGalaxy.PVPZone.Config.XP.XPReward_Kill);
+
+            XPSystem.ExpUp(MCGalaxyPlayer, MCGalaxy.PVPZone.Config.XP.XPReward_Die);
         }
         public void OnDeath()
         {
@@ -140,6 +152,7 @@ namespace PVPZone.Game.Player
             if (HeldItem == null)
                 return;
             HeldItem.Use(this);
+            GuiHeldBlock();
         }
 
         public void Punch(byte entityId)
@@ -297,7 +310,12 @@ namespace PVPZone.Game.Player
         }
         public void GuiHeldBlock()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.Status1, Inventory.Get(HeldBlock) == 0 ? "" :  Inventory.Get(MCGalaxyPlayer.ClientHeldBlock).ToString());
+            int blockAmount = Inventory.Get(HeldBlock);
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.Status1, blockAmount == 0 ? "" : blockAmount.ToString());
+        }
+        public void GuiHint(string message)
+        {
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.SmallAnnouncement, message);
         }
         ushort lastHeldBlock = 0;
         public void Think()

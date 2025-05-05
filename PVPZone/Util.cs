@@ -1,6 +1,7 @@
 ﻿using MCGalaxy.Maths;
 using MCGalaxy;
 using System;
+using MCGalaxy.Network;
 
 namespace PVPZone
 {
@@ -21,6 +22,24 @@ namespace PVPZone
                     return pl;
             }
             return null;
+        }
+        public static MCGalaxy.Player PlayerAt(Level level, Vec3U16 pos)
+        {
+            foreach (MCGalaxy.Player pl in PlayerInfo.Online.Items)
+            {
+                if (pl.Level != level) continue;
+                if (Math.Abs(pl.Pos.BlockX - pos.X) <= 1 && Math.Abs(pl.Pos.BlockY - pos.Y) <= 1 && Math.Abs(pl.Pos.BlockZ - pos.Z) <= 1)
+                    return pl;
+            }
+            return null;
+        }
+        public static MCGalaxy.Player PlayerAt(Level level, int x, int y, int z)
+        {
+            return PlayerAt(level, new Vec3U16((ushort)x, (ushort)y, (ushort)z));
+        }
+        public static MCGalaxy.Player PlayerAt(Level level, ushort x, ushort y, ushort z)
+        {
+            return PlayerAt(level, new Vec3U16((ushort)x, (ushort)y, (ushort)z));
         }
         public static MCGalaxy.Player PlayerAt(MCGalaxy.Player player, int x, int y, int z)
         {
@@ -66,6 +85,20 @@ namespace PVPZone
             string bar = "";
             for (int i = 0; i < max; i++) bar += (i < amount) ? symbol : "%0" + symbol;
             return bar;
+        }
+        public static void SetHotbar(Player p, byte slot, ushort block)
+        {
+            byte[] buffer = Packet.SetHotbar(block, slot, p.Session.hasExtBlocks);
+            p.Send(buffer);
+
+        }
+
+        public static void ClearHotbar(Player p)
+        {
+            for (byte i = 0; i < 9; i++)
+            {
+                SetHotbar(p, i, 0);
+            }
         }
     }
 }

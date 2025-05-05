@@ -1,6 +1,4 @@
 ﻿using MCGalaxy;
-using MCGalaxy.DB;
-using MCGalaxy.Games;
 using MCGalaxy.Maths;
 using PVPZone.Game.Player;
 

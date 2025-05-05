@@ -14,8 +14,6 @@ namespace MCGalaxy
 
         public static PVPZoneConfig Config { get; set; }
 
-
-
         public override void Load(bool startup)
         {
             Config = new PVPZoneConfig();

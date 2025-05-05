@@ -60,6 +60,7 @@
     <Compile Include="Game\Player\CurseManager.cs" />
     <Compile Include="Game\Player\DamageReason.cs" />
     <Compile Include="Game\Player\PlayerManager.cs" />
+    <Compile Include="Game\Player\XPSystem.cs" />
     <Compile Include="Game\Projectile\Projectile.cs" />
     <Compile Include="Game\Projectile\ProjectileManager.cs" />
     <Compile Include="Game\Item\PVPZoneItem.cs" />
@@ -84,10 +85,6 @@
     <ProjectReference Include="..\MCGalaxy-1.9.5.1\MCGalaxy\MCGalaxy_.csproj">
       <Project>{12597db0-7c34-4de1-88ea-9250ff3372eb}</Project>
       <Name>MCGalaxy_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XPPlugin\XPPlugin.csproj">
-      <Project>{5b3af402-87e7-44d1-a4d6-6b0cef7d8c9a}</Project>
-      <Name>XPPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

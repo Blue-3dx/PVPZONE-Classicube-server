@@ -24,7 +24,7 @@ namespace PVPZone.Game.Projectile.Projectiles
 
         public CurseBomb() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base (level, Position, Velocity, Thrower)
         {
-            BlockId = 486;
+            BlockId = 256 + 486;
             Gravity = 0.05f;
         }
     }

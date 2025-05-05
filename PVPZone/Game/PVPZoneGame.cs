@@ -13,6 +13,7 @@ namespace PVPZone.Game
             ProjectileManager.Load();
             ItemManager.Load();
             CurseManager.Load();
+            XPSystem.Load();
         }
         public static void Unload()
         {
@@ -20,6 +21,7 @@ namespace PVPZone.Game
             ProjectileManager.Unload();
             ItemManager.Unload();
             CurseManager.Unload();
+            XPSystem.Unload();
         }
     }
 }

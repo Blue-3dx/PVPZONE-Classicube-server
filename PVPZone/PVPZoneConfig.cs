@@ -22,6 +22,14 @@ namespace PVPZone
         public int HealInterval = 10;
 
     }
+    public class PVPZoneConfig_XP
+    {
+        public string ChatPrefix = "&2[%e{lvl}&2] ";
+        public string XPMsg_LevelUp = "&aYou leveled up to level {lvl}!";
+        public uint XPReward_Kill = 5;
+        public uint XPReward_Die = 2;
+        
+    }
     public class PVPZoneConfig_Item {
         public string XPMessage = "%cYou need to be level {xp}+ to use this item!";
         public string Cooldownmessage = "%cCooldown: %e{time} %fseconds!";
@@ -46,9 +54,17 @@ namespace PVPZone
                 "{vicColor}{vicName} %fwas %eblown to pieces %fby {atkColor}{atkName}%f!",
             },
             [DamageReason.DamageType.Frozen] = new string[] {
-                "{vicColor}{vicName} %fwas %frozen to death %fby {atkColor}{atkName}%f!",
+                "{vicColor}{vicName} %fwas %bfrozen%f to %cdeath %fby {atkColor}{atkName}%f!",
             },
-
+            [DamageReason.DamageType.Sword] = new string[] {
+                "{vicColor}{vicName} %fwas %stabbed to death %fby {atkColor}{atkName}%f!",
+            },
+            [DamageReason.DamageType.Fire] = new string[] {
+                "{vicColor}{vicName} %eperished in %cflames!",
+            },
+            [DamageReason.DamageType.Poison] = new string[] {
+                "{vicColor}{vicName} %ewas %2poisioned%e to death %fby {atkColor}{atkName}%f!",
+            }
         };
     }
     public class PVPZoneConfig
@@ -56,5 +72,6 @@ namespace PVPZone
         public PVPZoneConfig_Player Player = new PVPZoneConfig_Player();
         public PVPZoneConfig_Damage Damage = new PVPZoneConfig_Damage();
         public PVPZoneConfig_Item   Item   = new PVPZoneConfig_Item();
+        public PVPZoneConfig_XP     XP     = new PVPZoneConfig_XP();
     }
 }

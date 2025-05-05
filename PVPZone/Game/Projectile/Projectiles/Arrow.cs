@@ -1,6 +1,4 @@
-﻿using MCGalaxy;
-using MCGalaxy.Maths;
-using PVPZone.Game.Player;
+﻿using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile.Projectiles
 {
@@ -23,7 +21,7 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         public Arrow() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base(level, Position, Velocity, Thrower)
         {
-            BlockId = 156;
+            BlockId = 147 + 256;
         }
     }
 }

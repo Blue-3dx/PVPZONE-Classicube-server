@@ -23,7 +23,7 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         public Firework() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base (level, Position, Velocity, Thrower)
         {
-            BlockId = 483;
+            BlockId = 256+ 483;
             Gravity = 0f;
         }
     }

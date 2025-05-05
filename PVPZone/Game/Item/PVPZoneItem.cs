@@ -1,7 +1,6 @@
 ﻿using MCGalaxy;
 using PVPZone.Game.Player;
 using System;
-using System.Xml.Linq;
 
 namespace PVPZone.Game.Item
 {
@@ -19,12 +18,12 @@ namespace PVPZone.Game.Item
 
         public ushort Block_BlockId = 0;
 
-        public int Cooldowntime = 10;
+        public int Cooldowntime = 2;
 
         public virtual bool Use(PVPPlayer player)
         {
 
-            if (XPLevelRequired > 0 && XPPlugin.GetLevel(player.MCGalaxyPlayer) < XPLevelRequired)
+            if (XPLevelRequired > 0 && player.XPLevel < XPLevelRequired)
             {
                 player.MCGalaxyPlayer.Message(MCGalaxy.PVPZone.Config.Item.XPMessage.Replace("{xp}", XPLevelRequired.ToString()));
                 return false;
@@ -33,7 +32,7 @@ namespace PVPZone.Game.Item
             if (ItemManager.IsCooldown(player, this.Block_BlockId))
             {
                 DateTime cooldownend = ItemManager.GetCooldown(player, this.Block_BlockId);
-                int seconds = (int)Math.Floor( (cooldownend - DateTime.Now).TotalSeconds);
+                int seconds = (int)Math.Ceiling( (cooldownend - DateTime.Now).TotalSeconds);
                 player.MCGalaxyPlayer.Message(MCGalaxy.PVPZone.Config.Item.Cooldownmessage.Replace("{time}", seconds.ToString()));
                 return false;
             }
@@ -52,7 +51,7 @@ namespace PVPZone.Game.Item
 
         public virtual bool CanUse(PVPPlayer player)
         {
-            return XPLevelRequired > 0 ? XPPlugin.GetLevel(player.MCGalaxyPlayer) >= XPLevelRequired : true;
+            return XPLevelRequired > 0 ? XPSystem.GetLevel(player.MCGalaxyPlayer) >= XPLevelRequired : true;
         }
 
         public virtual void OnHit(PVPPlayer attacker, PVPPlayer victim)

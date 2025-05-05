@@ -1,4 +1,6 @@
-﻿namespace PVPZone.Game.Player
+﻿using System.Collections.Generic;
+
+namespace PVPZone.Game.Player
 {
     public class DamageReason
     {
@@ -28,6 +30,20 @@
             Arrow,
             Snowball
         }
+
+        public Dictionary<DamageType, string> DeathSymbols = new Dictionary<DamageType, string>()
+        {
+            [DamageType.None] = "%f?",
+            [DamageType.Punch] = "%f?",
+            [DamageType.Explosion] = "%c☼",
+            [DamageType.Snowball] = "%c☼",
+            [DamageType.Frozen] = "%b☼",
+            [DamageType.Arrow] = "%f→",
+            [DamageType.Starve] = "%f♦",
+            [DamageType.Fire] = "%c♠",
+        };
+
+
         static System.Random rnd = new System.Random();
         public static string GetDeathString(DamageType type, PVPPlayer victim, PVPPlayer attacker=null)
         {

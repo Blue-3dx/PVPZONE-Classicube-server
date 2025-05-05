@@ -99,6 +99,7 @@ namespace PVPZone.Game.Player
             Inventory.Add(ItemManager.PVPZoneItems.WindCharge, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Snowball, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Enderpearl, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.GoldenApple, 50);
         }
 
         public void Die(DamageReason damageHandler=null, string deathMessage = "")
@@ -226,6 +227,15 @@ namespace PVPZone.Game.Player
             if (Dead)
                 return;
 
+            if (MCGalaxyPlayer.Game.Referee)
+                return;
+
+            if (MCGalaxyPlayer.invincible)
+                return;
+
+            if (damageHandler.Attacker != null && damageHandler.Attacker.MCGalaxyPlayer.Game.Referee)
+                return;
+
             if (HealthGolden > 0)
             {
                 HealthGolden -= damageHandler.Amount;
@@ -300,13 +310,13 @@ namespace PVPZone.Game.Player
         {
             MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight1, Util.HealthBar("♥", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealth));
         }
-        public void GuiHealthExtra()
-        {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden));
-        }
         public void GuiHunger()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight3, Util.HealthBar("←", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHunger));
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, Util.HealthBar("←", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHunger));
+        }
+        public void GuiHealthExtra()
+        {
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight3, this.HealthGolden != 0 ? Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) : "");
         }
         public void GuiHeldBlock()
         {

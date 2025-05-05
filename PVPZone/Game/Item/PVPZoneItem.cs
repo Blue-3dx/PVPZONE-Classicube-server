@@ -12,13 +12,13 @@ namespace PVPZone.Game.Item
 
         public int Damage = 0;
 
-        public int Knockback = 0;
+        public float Knockback = 1f;
 
         public ushort Block_TextureId = 0;
 
         public ushort Block_BlockId = 0;
 
-        public int Cooldowntime = 2;
+        public float Cooldowntime = 1;
 
         public virtual bool Use(PVPPlayer player)
         {

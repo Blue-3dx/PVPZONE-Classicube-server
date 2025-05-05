@@ -62,7 +62,7 @@ namespace PVPZone.Game.Player
 
             if (pl == null) return;
 
-            if (button == MouseButton.Left && act == MouseAction.Pressed)
+            if (button == MouseButton.Left)
             {
                 pl.Punch(entity);
                 return;

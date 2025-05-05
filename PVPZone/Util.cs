@@ -82,8 +82,10 @@ namespace PVPZone
 
         public static string HealthBar(string symbol, int amount, int max)
         {
-            string bar = "";
-            for (int i = 0; i < max; i++) bar += (i < amount) ? symbol : "%0" + symbol;
+            string bar = "%f";
+            for (int i = 0; i < amount; i++) bar += symbol;
+            bar += "%0";
+            for (int i = amount; i < max; i++) bar += symbol;// (i < amount) ? symbol : "%0" + symbol;
             return bar;
         }
         public static void SetHotbar(Player p, byte slot, ushort block)

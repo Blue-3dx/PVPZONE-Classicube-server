@@ -19,9 +19,9 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         public override void OnCreation()
         {
-            this.Velocity = new Vec3F32(0, 2f, 0);
+            this.Velocity = new Vec3F32(0, 0.8f, 0);
         }
-        public Firework() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base (level, Position, Velocity, Thrower)
+        public Firework() : base()
         {
             BlockId = 256+ 483;
             Gravity = 0f;

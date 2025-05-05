@@ -8,13 +8,9 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         {
             if (!base.Use(player)) return false;
 
-            Projectile.Projectile.Throw(new Projectile.Projectiles.CurseBomb(), player, 2f);
+            Projectile.Projectile.Throw(new Projectile.Projectiles.Firework(), player, 2f);
 
             return true;
-        }
-        public override void OnHit(PVPPlayer attacker, PVPPlayer victim)
-        {
-
         }
 
         public Firework(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)

@@ -8,13 +8,10 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         {
             if (!base.Use(player)) return false;
             if (!player.Inventory.Has((ushort)ItemManager.PVPZoneItems.Arrow)) return false;
+
             Projectile.Projectile.Throw(new Projectile.Projectiles.Arrow(), player, 2f);
-
+            player.Inventory.Remove((ushort)ItemManager.PVPZoneItems.Arrow);
             return true;
-        }
-        public override void OnHit(PVPPlayer attacker, PVPPlayer victim)
-        {
-
         }
 
         public Bow(ushort id, ushort textureId = 0, string Name="") : base(id, textureId, Name)

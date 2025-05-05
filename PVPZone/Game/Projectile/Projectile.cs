@@ -72,16 +72,8 @@ namespace PVPZone.Game.Projectile
         {
 
         }
-        public Projectile()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower=null)
+        public Projectile()
         {
-            /*this.Level = level;
-            this.Position = Position;
-            this.PositionLast = Util.Round(Position);
-            this.Velocity = Velocity;
-            this.Thrower = Thrower;
-
-            Vec3U16 blockPos = Util.Round(Position);
-            level.BroadcastChange(blockPos.X, blockPos.Y, blockPos.Z, BlockId);*/
         }
         public static void Throw(Projectile projectile, PVPPlayer thrower, float power=1)
         {

@@ -20,7 +20,7 @@ namespace PVPZone.Game.Projectile.Projectiles
             Vec3U16 blockPos = Util.Round(Position);
             Util.Effect(Level, effects[rnd.Next(0, effects.Length - 1)], blockPos.X, blockPos.Y, blockPos.Z);
         }
-        public BlastBall() : base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base (level, Position, Velocity, Thrower)
+        public BlastBall() : base()
         {
             BlockId = 256 + 483;
             //Gravity = 0.005f;

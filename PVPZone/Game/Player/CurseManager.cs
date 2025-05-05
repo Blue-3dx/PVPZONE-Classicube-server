@@ -4,6 +4,7 @@ using MCGalaxy;
 using MCGalaxy.Commands;
 using MCGalaxy.Events.PlayerEvents;
 using MCGalaxy.Network;
+using PVPZone.Game.Player;
 
 namespace MCGalaxy
 {
@@ -75,7 +76,9 @@ namespace MCGalaxy
 
             if (curse == "Harming")
             {
-                Command.Find("kill").Use(Player.Console, target.name);
+                PVPPlayer pvpp = PVPPlayer.Get(p);
+                if (pvpp != null) pvpp.Damage(new DamageReason(DamageReason.DamageType.None, 10, pvpp));
+                //Command.Find("kill").Use(Player.Console, target.name);
                 return;
             }
 

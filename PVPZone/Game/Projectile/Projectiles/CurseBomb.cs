@@ -1,6 +1,4 @@
-﻿using MCGalaxy;
-using MCGalaxy.Maths;
-using PVPZone.Game.Player;
+﻿using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile.Projectiles
 {
@@ -11,14 +9,10 @@ namespace PVPZone.Game.Projectile.Projectiles
             if (player == null)
                 return;
             if (player.MCGalaxyPlayer.Model == "shieldb3")
-            {
-                // Do nothing if the player has the "shieldb3" model
                 return;
-            }
+
             player.Curse();
-
             player.Knockback(this.Velocity.X, 2f, this.Velocity.Z, 1.5f);
-
             player.DamageEffect();
         }
 

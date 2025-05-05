@@ -2,17 +2,9 @@
 using MCGalaxy.SQL;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace PVPZone.Game.Player
 {
-    public class XPData
-    {
-        string Name;
-        uint Level;
-        uint Exp;
-    }
-
     public class XPSystem
     {
         private static Cmdxp xpCmd;

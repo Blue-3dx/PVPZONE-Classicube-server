@@ -12,10 +12,6 @@ namespace PVPZone.Game.Item.Weapon.Ranged
 
             return true;
         }
-        public override void OnHit(PVPPlayer attacker, PVPPlayer victim)
-        {
-
-        }
 
         public EnderPearl(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)
         {

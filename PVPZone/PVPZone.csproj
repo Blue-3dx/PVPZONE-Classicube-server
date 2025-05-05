@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8D25D0C9-249B-4939-9673-CC116692A88D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PVPZone</RootNamespace>
+    <AssemblyName>PVPZone</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="goodlyeffects">
+      <HintPath>..\PluginRefs\goodlyeffects.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game\Item\Aid\Food.cs" />
+    <Compile Include="Game\Item\Aid\GoldenApple.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Arrow.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Bow.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\CurseBomb.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Firework.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\BlastBall.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Icebomb.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Snowball.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\EnderPearl.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\Windcharge.cs" />
+    <Compile Include="Game\Map\LootManager.cs" />
+    <Compile Include="Game\Player\CurseManager.cs" />
+    <Compile Include="Game\Player\DamageReason.cs" />
+    <Compile Include="Game\Player\PlayerManager.cs" />
+    <Compile Include="Game\Player\XPSystem.cs" />
+    <Compile Include="Game\Projectile\Projectile.cs" />
+    <Compile Include="Game\Projectile\ProjectileManager.cs" />
+    <Compile Include="Game\Item\PVPZoneItem.cs" />
+    <Compile Include="Game\Item\ItemManager.cs" />
+    <Compile Include="Game\Player\PVPPlayer.cs" />
+    <Compile Include="Game\Player\PVPPlayerInventory.cs" />
+    <Compile Include="Game\Projectile\Projectiles\CurseBomb.cs" />
+    <Compile Include="Game\Projectile\Projectiles\Firework.cs" />
+    <Compile Include="Game\Projectile\Projectiles\BlastBall.cs" />
+    <Compile Include="Game\Projectile\Projectiles\Snowball.cs" />
+    <Compile Include="Game\Projectile\Projectiles\Arrow.cs" />
+    <Compile Include="Game\Projectile\Projectiles\Icebomb.cs" />
+    <Compile Include="Game\Projectile\Projectiles\EnderPearl.cs" />
+    <Compile Include="Game\Projectile\Projectiles\WindCharge.cs" />
+    <Compile Include="Game\PVPZoneGame.cs" />
+    <Compile Include="PVPZone.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PVPZoneConfig.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MCGalaxy-1.9.5.1\MCGalaxy\MCGalaxy_.csproj">
+      <Project>{12597db0-7c34-4de1-88ea-9250ff3372eb}</Project>
+      <Name>MCGalaxy_</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

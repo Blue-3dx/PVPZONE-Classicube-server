@@ -33,6 +33,9 @@ namespace PVPZone
     public class PVPZoneConfig_Item {
         public string XPMessage = "%cYou need to be level {xp}+ to use this item!";
         public string Cooldownmessage = "%cCooldown: %e{time} %fseconds!";
+        public float LootItemSpawnInteveral = 5f;
+        public float LootItemExpiryTime = 30f;
+        public int LootItemMax = 30;
     }
     public class PVPZoneConfig_Damage
     {

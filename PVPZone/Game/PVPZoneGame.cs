@@ -1,5 +1,6 @@
 ﻿using MCGalaxy;
 using PVPZone.Game.Item;
+using PVPZone.Game.Map;
 using PVPZone.Game.Player;
 using PVPZone.Game.Projectile;
 
@@ -14,6 +15,7 @@ namespace PVPZone.Game
             ItemManager.Load();
             CurseManager.Load();
             XPSystem.Load();
+            LootManager.Load();
         }
         public static void Unload()
         {
@@ -22,6 +24,7 @@ namespace PVPZone.Game
             ItemManager.Unload();
             CurseManager.Unload();
             XPSystem.Unload();
+            LootManager.Unload();
         }
     }
 }

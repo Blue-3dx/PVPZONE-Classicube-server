@@ -22,8 +22,7 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         public BlastBall() : base()
         {
-            BlockId = 256 + 483;
-            //Gravity = 0.005f;
+            BlockId = 256 + 501;
         }
     }
 }

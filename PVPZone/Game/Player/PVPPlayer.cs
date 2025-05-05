@@ -89,7 +89,7 @@ namespace PVPZone.Game.Player
             SendGui();
 
             //Testing
-            Inventory.Add(ItemManager.PVPZoneItems.BlastBall, 50);
+            /*Inventory.Add(ItemManager.PVPZoneItems.BlastBall, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Firework, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Food1, 50);
             Inventory.Add(ItemManager.PVPZoneItems.IceBomb,50);
@@ -99,7 +99,7 @@ namespace PVPZone.Game.Player
             Inventory.Add(ItemManager.PVPZoneItems.WindCharge, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Snowball, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Enderpearl, 50);
-            Inventory.Add(ItemManager.PVPZoneItems.GoldenApple, 50);
+            Inventory.Add(ItemManager.PVPZoneItems.GoldenApple, 50);*/
         }
 
         public void Die(DamageReason damageHandler=null, string deathMessage = "")
@@ -138,6 +138,14 @@ namespace PVPZone.Game.Player
                 curseCmd.Use(MCGalaxy.Player.Console, MCGalaxyPlayer.name);
             }
         }
+        public void SetHeldBlock( ushort blockId, bool locked = false)
+        {
+            if (!MCGalaxyPlayer.Supports(CpeExt.HeldBlock))
+                return;
+            if (blockId > 65 && blockId < 256)
+                blockId = (ushort)(blockId + 256);
+            MCGalaxyPlayer.Session.SendHoldThis(blockId, locked);
+        }
         public void DamageEffect(bool crit=false)
         {
             int ex = MCGalaxyPlayer.Pos.BlockX;
@@ -152,7 +160,10 @@ namespace PVPZone.Game.Player
         {
             if (HeldItem == null)
                 return;
+            var itemID = HeldItem.Block_BlockId;
             HeldItem.Use(this);
+            if (!Inventory.Has(itemID))
+                SetHeldBlock(0);
             GuiHeldBlock();
         }
 

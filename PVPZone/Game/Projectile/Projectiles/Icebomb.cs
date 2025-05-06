@@ -9,24 +9,28 @@ namespace PVPZone.Game.Projectile.Projectiles
         public override void OnCollide( PVPPlayer player)
         {
             Vec3U16 BlockPosition = Util.Round(Position);
-            SpawnIceCube(Level, BlockPosition.X, BlockPosition.Y-1, BlockPosition.Z);
+            SpawnIceCube(Level, BlockPosition.X, BlockPosition.Y+1, BlockPosition.Z);
         }
+        static System.Random rnd = new System.Random();
+
+        static int rndDirection { get { return rnd.Next(0, 2) ==1 ? -1 : 1; } }
         private void SpawnIceCube(Level lvl, int cx, int cy, int cz)
         {
             for (int x = -1; x <= 1; x++)
-                for (int y = 0; y <= 4; y++) // cy to cy + 2, effectively cy-1 to cy+1
+                for (int y = -1; y <= 1; y++) // cy to cy + 2, effectively cy-1 to cy+1
                     for (int z = -1; z <= 1; z++)
                     {
                         int px = cx + x, py = cy + y, pz = cz + z;
                         if (!lvl.IsValidPos(px, py, pz)) continue;
                         if (lvl.GetBlock((ushort)px, (ushort)py, (ushort)pz) != Block.Air)
                             continue;
-             
-                        lvl.Blockchange((ushort)px, (ushort)py, (ushort)pz, Block.Ice);
+                       // MCGalaxy.Player.Console.Message($"Spawning ice at {px}{py}{pz}");
+                        Projectile.Throw(new Debris() { BlockId = Block.Ice }, lvl, new Vec3F32((float)px, (float)py, (float)pz), new Vec3F32((float)(rnd.NextDouble()* rndDirection* 0.5f), 0.5f, (float)(rnd.NextDouble()*rndDirection * 0.5f)), 0.5f);
+                        //lvl.Blockchange((ushort)px, (ushort)py, (ushort)pz, Block.Ice);
                     }
 
             for (int x = -1; x <= 1; x++)
-                for (int y = 0; y <= 4; y++) // cy to cy + 2, effectively cy-1 to cy+1
+                for (int y = 0; y <= 3; y++) // cy to cy + 2, effectively cy-1 to cy+1
                     for (int z = -1; z <= 1; z++)
                     {
                         int px = cx + x, py = cy + y, pz = cz + z;

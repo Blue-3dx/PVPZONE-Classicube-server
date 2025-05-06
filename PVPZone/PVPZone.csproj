@@ -55,6 +55,7 @@
     <Compile Include="Game\Item\Weapon\Ranged\Icebomb.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Snowball.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\EnderPearl.cs" />
+    <Compile Include="Game\Item\Weapon\Ranged\TNT.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Windcharge.cs" />
     <Compile Include="Game\Map\LootManager.cs" />
     <Compile Include="Game\Player\CurseManager.cs" />
@@ -68,12 +69,14 @@
     <Compile Include="Game\Player\PVPPlayer.cs" />
     <Compile Include="Game\Player\PVPPlayerInventory.cs" />
     <Compile Include="Game\Projectile\Projectiles\CurseBomb.cs" />
+    <Compile Include="Game\Projectile\Projectiles\Debris.cs" />
     <Compile Include="Game\Projectile\Projectiles\Firework.cs" />
     <Compile Include="Game\Projectile\Projectiles\BlastBall.cs" />
     <Compile Include="Game\Projectile\Projectiles\Snowball.cs" />
     <Compile Include="Game\Projectile\Projectiles\Arrow.cs" />
     <Compile Include="Game\Projectile\Projectiles\Icebomb.cs" />
     <Compile Include="Game\Projectile\Projectiles\EnderPearl.cs" />
+    <Compile Include="Game\Projectile\Projectiles\TNT.cs" />
     <Compile Include="Game\Projectile\Projectiles\WindCharge.cs" />
     <Compile Include="Game\PVPZoneGame.cs" />
     <Compile Include="PVPZone.cs" />

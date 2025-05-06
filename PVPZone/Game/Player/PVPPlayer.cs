@@ -96,7 +96,7 @@ namespace PVPZone.Game.Player
 
             nextHunger = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerDecayInterval);
             nextStarve = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerStarveInterval);
-
+            Inventory.Add(ItemManager.PVPZoneItems.TNT, 50);
             SendGui();
 
             //Testing
@@ -142,7 +142,6 @@ namespace PVPZone.Game.Player
         }
         public void Curse()//(string curse="Slowness")
         {
-            //MCGalaxyPlayer.Extras["curse"] = curse;
             Command curseCmd = Command.Find("curse");
             if (curseCmd != null)
             {

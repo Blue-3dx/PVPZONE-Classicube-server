@@ -165,12 +165,12 @@ namespace PVPZone.Game.Gamemodes
             MapConfig.SetDefaults(Map);
             MapConfig.Load(Map.name);
 
-            foreach (var motd in customMotdAddition.Split(' '))
+            /*foreach (var motd in customMotdAddition.Split(' '))
             {
                 if (!Map.Config.MOTD.Contains(motd))
                     Map.Config.MOTD += " " + customMotdAddition;
             }
-            Map.Config.MOTD = Map.Config.MOTD.Replace("ignore", "").Trim();
+            Map.Config.MOTD = Map.Config.MOTD.Replace("ignore", "").Trim();*/
         }
         protected override List<MCGalaxy.Player> GetPlayers()
         {

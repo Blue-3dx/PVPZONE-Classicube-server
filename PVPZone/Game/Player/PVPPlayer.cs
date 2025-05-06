@@ -1,4 +1,5 @@
 ﻿using MCGalaxy;
+using MCGalaxy.DB;
 using MCGalaxy.Maths;
 using MCGalaxy.Network;
 using PVPZone.Game.Item;
@@ -71,7 +72,17 @@ namespace PVPZone.Game.Player
             Inventory = new PVPPlayerInventory(this);
             Players.Add(this);
         }
-
+        public void Pickup(ushort ItemId, int amount=1)
+        {
+            Inventory.Add((ushort)(ItemId - 256), amount);
+            ushort lastHeld = HeldBlock;
+            SetHeldBlock(ItemId);
+            if (lastHeld != 0)
+            {
+                SetHeldBlock(0);
+                SetHeldBlock((ushort)(lastHeld + 256));
+            }
+        }
         public void Spawn()
         {
             Inventory.SendInventoryOrder();

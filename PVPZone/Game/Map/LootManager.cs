@@ -54,15 +54,16 @@ namespace PVPZone.Game.Map
         public static void Load()
         {
             Task = Server.MainScheduler.QueueRepeat(LootTick, null, TimeSpan.FromMilliseconds(60));
-            MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Register(PlayerClick, MCGalaxy.Priority.Normal);
+           // MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Register(PlayerClick, MCGalaxy.Priority.Normal);
         }
         public static void Unload()
         {
-            MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Unregister(PlayerClick);
+           // MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Unregister(PlayerClick);
             Server.MainScheduler.Cancel(Task);
         }
         static DateTime nextLoot = DateTime.Now;
         static System.Random rnd = new System.Random();
+        static string[] effects = { "bluefirework", "greenfirework", "purplefirework", "rainbowfirework", "redfirework", "yellowfirework" };
         private static void SpawnLoot(Level level)
         {
             if (level.players.Count == 0) { return; }
@@ -104,8 +105,6 @@ namespace PVPZone.Game.Map
                 a.RemoveBlock();
                 SpawnedLoot[level].Remove(a);
                 break;
-
-
             }
         }
 
@@ -129,12 +128,12 @@ namespace PVPZone.Game.Map
             }
         }
 
-        private static void PlayerClick(MCGalaxy.Player player, MouseButton button, MouseAction act, ushort yaw, ushort pitch, byte entity, ushort x, ushort y, ushort z, TargetBlockFace face)
+        public static bool PlayerClick(MCGalaxy.Player player, MouseButton button, MouseAction act, ushort yaw, ushort pitch, byte entity, ushort x, ushort y, ushort z, TargetBlockFace face)
         {
 
-            if (!SpawnedLoot.ContainsKey(player.level)) return;
+            if (!SpawnedLoot.ContainsKey(player.level)) return false;
             PVPPlayer pvpPl = PVPPlayer.Get(player);
-            if (pvpPl == null) return;
+            if (pvpPl == null) return false;
 
             for (int i = 0; i < SpawnedLoot[player.level].Count;i++)
             {
@@ -146,11 +145,12 @@ namespace PVPZone.Game.Map
                 if (loot.Position.Z != z)
                     continue;
                 loot.RemoveBlock();
-                pvpPl.Inventory.Add((ushort)(loot.ItemId - 256));
                 SpawnedLoot[player.level].Remove(loot);
-                pvpPl.SetHeldBlock(loot.ItemId);
-                break;
+                pvpPl.Pickup(loot.ItemId);
+                Util.Effect(player.level, effects[rnd.Next(0, effects.Length-1)], x, y, z);
+                return true;
             }
+            return false;
         }
     }
 }

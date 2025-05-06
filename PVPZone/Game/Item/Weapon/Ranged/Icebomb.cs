@@ -16,7 +16,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         public Icebomb(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)
         {
             this.RemoveOnUse = true;
-            this.XPLevelRequired = 10;
+            this.XPLevelRequired = 15;
             this.Cooldowntime = 3f;
             this.PickupAmount = 2;
         }

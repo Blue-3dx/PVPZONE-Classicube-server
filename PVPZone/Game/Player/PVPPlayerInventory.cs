@@ -81,6 +81,7 @@ namespace PVPZone.Game.Player
 
         public bool Has(ushort blockId, int amount = 1)
         {
+            if (pl.MCGalaxyPlayer.level.Config.MOTD.Contains("-inventory")) return ItemManager.Items.ContainsKey(blockId);
             if (!Inventory.ContainsKey(blockId)) return false;
 
             return Inventory[blockId] >= amount;

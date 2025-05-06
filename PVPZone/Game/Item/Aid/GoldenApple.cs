@@ -11,9 +11,10 @@ namespace PVPZone.Game.Item.Weapon.Ranged
             player.HealGolden(MCGalaxy.PVPZone.Config.Player.MaxHealthGolden);
             return true;
         }
-        public override void OnHit(PVPPlayer attacker, PVPPlayer victim)
+        public override bool CanUse(PVPPlayer player)
         {
-
+            if (player.HealthGolden >= MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) return false;
+            return base.CanUse(player);
         }
 
         public GoldenApple(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)

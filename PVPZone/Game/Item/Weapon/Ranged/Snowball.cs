@@ -17,7 +17,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
             this.RemoveOnUse = true;
             this.XPLevelRequired = 0;
             this.Cooldowntime = 0.1f;
-            this.PickupAmount = 15;
+            this.PickupAmount = 25;
         }
     }
 }

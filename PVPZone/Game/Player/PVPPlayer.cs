@@ -230,11 +230,12 @@ namespace PVPZone.Game.Player
                 MCGalaxyPlayer.Pos.Z - victim.Pos.Z
             );
 
-            float power = isCrit ? 2f : 1f;
+            float power = isCrit ? 1.5f : 0.8f;
             if (HeldItem != null)
                 power *= HeldItem.Knockback;
 
-            pvpVictim.Knockback( dir, isCrit ? 2f : 1f);
+            Vec3F32 normalDir = Vec3F32.Normalise(dir);
+            pvpVictim.Knockback(-normalDir.X, 0.5f, -normalDir.Z, power);
             pvpVictim.DamageEffect(isCrit);
         }
 

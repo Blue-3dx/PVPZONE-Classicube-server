@@ -14,9 +14,9 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         private void SpawnExplosion(int cx, int cy, int cz)
         {
-            Util.FakeExplosionEffect(Level, cx, cy, cz);
+            Util.Effect(Level, "explosion", cx, cy, cz);
             for (int x = -1; x <= 1; x++)
-                for (int y = 0; y <= 3; y++) // cy to cy + 2, effectively cy-1 to cy+1
+                for (int y = -1; y <= 1; y++)
                     for (int z = -1; z <= 1; z++)
                     {
                         int px = cx + x, py = cy + y, pz = cz + z;
@@ -28,7 +28,7 @@ namespace PVPZone.Game.Projectile.Projectiles
                             continue;
                         pvpPl.Damage(new DamageReason(DamageReason.DamageType.Explosion, 20, pvpPl, this.Thrower));
                     }
-
+            Util.FakeExplosionEffect(Level, cx, cy, cz, 2);
         }
         public override void OnTick()
         {

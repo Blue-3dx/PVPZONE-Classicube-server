@@ -45,8 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\Commands\CmdCurse.cs" />
+    <Compile Include="Game\Commands\CmdPvpZone.cs" />
+    <Compile Include="Game\Commands\CmdXP.cs" />
     <Compile Include="Game\Item\Aid\Food.cs" />
     <Compile Include="Game\Item\Aid\GoldenApple.cs" />
+    <Compile Include="Game\Item\Weapon\Melee\Mace.cs" />
+    <Compile Include="Game\Item\Weapon\Melee\Sword.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Arrow.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\Bow.cs" />
     <Compile Include="Game\Item\Weapon\Ranged\CurseBomb.cs" />
@@ -78,7 +83,7 @@
     <Compile Include="Game\Projectile\Projectiles\EnderPearl.cs" />
     <Compile Include="Game\Projectile\Projectiles\TNT.cs" />
     <Compile Include="Game\Projectile\Projectiles\WindCharge.cs" />
-    <Compile Include="Game\PVPZoneGame.cs" />
+    <Compile Include="Game\Gamemodes\PVPZoneGame.cs" />
     <Compile Include="PVPZone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PVPZoneConfig.cs" />

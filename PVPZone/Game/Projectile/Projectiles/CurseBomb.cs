@@ -1,4 +1,5 @@
-﻿using PVPZone.Game.Player;
+﻿using MCGalaxy.Maths;
+using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile.Projectiles
 {
@@ -6,6 +7,8 @@ namespace PVPZone.Game.Projectile.Projectiles
     {
         public override void OnCollide(PVPPlayer player)
         {
+            Vec3U16 blockPos = Util.Round(Position);
+            Util.Effect(Level, "explosion", blockPos.X, blockPos.Y, blockPos.Z);
             if (player == null)
                 return;
             if (player.MCGalaxyPlayer.Model == "shieldb3")

@@ -24,7 +24,9 @@ namespace PVPZone.Game.Item
             Food2 = 117,
             Food3 = 118,
             Food4 = 119,
-            TNT = Block.TNT
+            TNT = Block.TNT,
+            Mace = 243,
+            Sword = 91
         }
 
         public static Dictionary<PVPPlayer, Dictionary<ushort, DateTime>> Cooldowns = new Dictionary<PVPPlayer, Dictionary<ushort, DateTime>>();
@@ -55,6 +57,10 @@ namespace PVPZone.Game.Item
             [(ushort)PVPZoneItems.Food4] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food4, textureId: 229, "Apple"),
 
             [(ushort)PVPZoneItems.TNT] = new PVPZone.Game.Item.Weapon.Ranged.TNT((ushort)PVPZoneItems.TNT),
+
+            [(ushort)PVPZoneItems.Mace] = new PVPZone.Game.Item.Weapon.Melee.Mace((ushort)PVPZoneItems.Mace, textureId: 453, "Mace"),
+
+            [(ushort)PVPZoneItems.Sword] = new PVPZone.Game.Item.Weapon.Melee.Sword((ushort)PVPZoneItems.Sword, textureId: 204, "Iron Sword"),
         };
         
         public static void Cooldown(PVPPlayer player, ushort BlockId, float duration)

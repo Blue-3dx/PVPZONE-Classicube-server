@@ -4,6 +4,8 @@ using System;
 using MCGalaxy.Network;
 using PVPZone.Game.Projectile;
 using PVPZone.Game.Projectile.Projectiles;
+using PVPZone.Game.Gamemodes;
+using PVPZone.Game.Player;
 
 namespace PVPZone
 {
@@ -11,7 +13,7 @@ namespace PVPZone
     {
         public static bool IsPVPLevel(Level level)
         {
-            return level.Config.MOTD.Contains("+pvp");
+            return level.Config.MOTD.Contains("+pvp") || PVPZoneGame.Instance.Map == level;
         }
         public static bool IsNoInventoryLevel(Level level)
         {
@@ -28,6 +30,12 @@ namespace PVPZone
             {
                 if (pl == player) continue;
                 if (pl.Level != player.Level) continue;
+                if (IsPVPLevel(pl.Level))
+                {
+                    PVPPlayer pvppl = PVPPlayer.Get(pl);
+                    if (pvppl != null && pvppl.Dead)
+                        continue;
+                }
                 if (Math.Abs(pl.Pos.BlockX - pos.X) <= 1 && Math.Abs(pl.Pos.BlockY - pos.Y) <= 1 && Math.Abs(pl.Pos.BlockZ - pos.Z) <= 1)
                     return pl;
             }
@@ -38,6 +46,12 @@ namespace PVPZone
             foreach (MCGalaxy.Player pl in PlayerInfo.Online.Items)
             {
                 if (pl.Level != level) continue;
+                if (IsPVPLevel(pl.Level))
+                {
+                    PVPPlayer pvppl = PVPPlayer.Get(pl);
+                    if (pvppl != null && pvppl.Dead)
+                        continue;
+                }
                 if (Math.Abs(pl.Pos.BlockX - pos.X) <= 1 && Math.Abs(pl.Pos.BlockY - pos.Y) <= 1 && Math.Abs(pl.Pos.BlockZ - pos.Z) <= 1)
                     return pl;
             }
@@ -63,7 +77,7 @@ namespace PVPZone
         {
             foreach (MCGalaxy.Player pl in PlayerInfo.Online.Items)
             {
-                if (pl.EntityID == id);
+                if (pl.EntityID == id)
                     return pl;
             }
             return null;
@@ -71,11 +85,11 @@ namespace PVPZone
         static System.Random rnd = new System.Random();
 
         static int rndDirection { get { return rnd.Next(0, 2) == 1 ? -1 : 1; } }
-        public static void FakeExplosionEffect(Level lvl, int cx, int cy, int cz)
+        public static void FakeExplosionEffect(Level lvl, int cx, int cy, int cz, ushort radius = 1)
         {
-            for (int x = -1; x <= 1; x++)
-                for (int y = -1; y <= 1; y++) // cy to cy + 2, effectively cy-1 to cy+1
-                    for (int z = -1; z <= 1; z++)
+            for (int x = -radius; x <= radius; x++)
+                for (int y = -radius; y <= radius; y++) // cy to cy + 2, effectively cy-1 to cy+1
+                    for (int z = -radius; z <= radius; z++)
                     {
                         int px = cx + x, py = cy + y, pz = cz + z;
                         if (!lvl.IsValidPos(px, py, pz)) continue;

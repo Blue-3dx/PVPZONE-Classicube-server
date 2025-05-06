@@ -107,7 +107,13 @@ namespace PVPZone.Game.Map
                 break;
             }
         }
-
+        public static void ClearLoot(Level level)
+        {
+            List<SpawnedLoot> lootList = new List<SpawnedLoot>();
+            SpawnedLoot.TryGetValue(level, out lootList);
+            if (lootList != null)
+                lootList.Clear();
+        }
         private static void LootTick(SchedulerTask task)
         {
             Task = task;
@@ -136,7 +142,7 @@ namespace PVPZone.Game.Map
             if (!SpawnedLoot.ContainsKey(player.level)) return false;
             PVPPlayer pvpPl = PVPPlayer.Get(player);
             if (pvpPl == null) return false;
-
+            if (pvpPl.Dead) return false;
             for (int i = 0; i < SpawnedLoot[player.level].Count;i++)
             {
                 var loot = SpawnedLoot[player.level][i];

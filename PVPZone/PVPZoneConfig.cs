@@ -25,7 +25,8 @@ namespace PVPZone
     public class PVPZoneConfig_XP
     {
         public string ChatPrefix = "&2[%e{lvl}&2] ";
-        public string XPMsg_LevelUp = "&aYou leveled up to level {lvl}!";
+        public string XPMsg_LevelUp = "&aYou leveled up to level %e{lvl}!";
+        public string XPMsg_XPUp = "%a+%e{xp}%axp";
         public uint XPReward_Kill = 5;
         public uint XPReward_Die = 2;
         
@@ -36,6 +37,11 @@ namespace PVPZone
         public float LootItemSpawnInteveral = 2.5f;
         public float LootItemExpiryTime = 60f;
         public int LootItemMax = 80;
+    }
+
+    public class PVPZoneConfig_Round
+    {
+        public int Countdown = 10;
     }
     public class PVPZoneConfig_Damage
     {
@@ -57,13 +63,16 @@ namespace PVPZone
                 "{vicColor}{vicName} %fwas %eblown to pieces %fby {atkColor}{atkName}%f!",
             },
             [DamageReason.DamageType.Debris] = new string[] {
-                "{vicColor}{vicName}%e's skull was shattered by falling rocks!",
+                "{vicColor}{vicName}%e had thier skull shattered by falling debris!",
             },
             [DamageReason.DamageType.Frozen] = new string[] {
                 "{vicColor}{vicName} %fwas %bfrozen%f to %cdeath %fby {atkColor}{atkName}%f!",
             },
             [DamageReason.DamageType.Sword] = new string[] {
-                "{vicColor}{vicName} %fwas %stabbed to death %fby {atkColor}{atkName}%f!",
+                "{vicColor}{vicName} %fwas %estabbed to death %fby {atkColor}{atkName}%f!",
+            },
+            [DamageReason.DamageType.Mace] = new string[] {
+                "{vicColor}{vicName} %fwas %ecrushed to death with a mace %fby {atkColor}{atkName}%f!",
             },
             [DamageReason.DamageType.Fire] = new string[] {
                 "{vicColor}{vicName} %eperished in %cflames!",
@@ -79,5 +88,6 @@ namespace PVPZone
         public PVPZoneConfig_Damage Damage = new PVPZoneConfig_Damage();
         public PVPZoneConfig_Item   Item   = new PVPZoneConfig_Item();
         public PVPZoneConfig_XP     XP     = new PVPZoneConfig_XP();
+        public PVPZoneConfig_Round  Round  = new PVPZoneConfig_Round();
     }
 }

@@ -81,6 +81,7 @@ namespace PVPZone.Game.Player
 
         public bool Has(ushort blockId, int amount = 1)
         {
+            if (Util.IsNoInventoryLevel(pl.MCGalaxyPlayer.level)) return ItemManager.Items.ContainsKey(blockId);
             if (!Inventory.ContainsKey(blockId)) return false;
 
             return Inventory[blockId] >= amount;

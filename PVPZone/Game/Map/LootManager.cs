@@ -117,6 +117,8 @@ namespace PVPZone.Game.Map
             {
                 foreach (var a in MCGalaxy.LevelInfo.Loaded.Items) // MCGalaxy.Games.IGame.RunningGames.Items)
                 {
+                    if (!Util.IsPVPLevel(a)) continue;
+                    if (Util.IsNoInventoryLevel(a)) continue;
                     if (spawnLoot)
                         SpawnLoot(a);
                     MoveLoot(a);

@@ -9,6 +9,14 @@ namespace PVPZone
 {
     public class Util
     {
+        public static bool IsPVPLevel(Level level)
+        {
+            return level.Config.MOTD.Contains("+pvp");
+        }
+        public static bool IsNoInventoryLevel(Level level)
+        {
+            return level.Config.MOTD.Contains("-inventory");
+        }
         public static Vec3U16 Round(Vec3F32 v)
         {
             unchecked { return new Vec3U16((ushort)Math.Round(v.X), (ushort)Math.Round(v.Y), (ushort)Math.Round(v.Z)); }

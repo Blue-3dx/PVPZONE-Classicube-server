@@ -16,7 +16,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         public TNT(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)
         {
             this.RemoveOnUse = true;
-            this.XPLevelRequired = 7;
+            this.XPLevelRequired = 20;
             this.PickupAmount = 2;
         }
     }

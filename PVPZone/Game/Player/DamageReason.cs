@@ -29,7 +29,8 @@ namespace PVPZone.Game.Player
             Frozen,
             Arrow,
             Snowball,
-            Debris
+            Debris,
+            Mace
         }
 
         public Dictionary<DamageType, string> DeathSymbols = new Dictionary<DamageType, string>()

@@ -22,6 +22,8 @@ namespace PVPZone.Game.Item
 
         public int PickupAmount = 1; // Amount given when picked up off ground
 
+        public DamageReason.DamageType DamageType = DamageReason.DamageType.None;
+
         public virtual bool Use(PVPPlayer player)
         {
             if (!CanUse(player)) return false;

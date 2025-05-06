@@ -1,11 +1,12 @@
 ﻿using MCGalaxy;
-using MCGalaxy.DB;
 using MCGalaxy.Maths;
 using MCGalaxy.Network;
+using PVPZone.Game.Gamemodes;
 using PVPZone.Game.Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static PVPZone.Game.Player.DamageReason;
 
 namespace PVPZone.Game.Player
 {
@@ -16,7 +17,14 @@ namespace PVPZone.Game.Player
 
         public static PVPPlayer Get(MCGalaxy.Player player)
         {
-            return Players.First((x) => x.MCGalaxyPlayer == player);
+            try
+            {
+                return Players.First((x) => x.MCGalaxyPlayer == player);
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
         }
 
         public MCGalaxy.Player MCGalaxyPlayer;
@@ -28,12 +36,15 @@ namespace PVPZone.Game.Player
         public int HealthGolden = 0;
         public int Hunger = MCGalaxy.PVPZone.Config.Player.MaxHunger;
 
-        public bool Dead { get { return Health <= 0; } }
+        public bool Spectator { get { return PVPZoneGame.Instance.RoundInProgress && PVPZoneGame.Instance.Map == MCGalaxyPlayer.Level && !PVPZoneGame.Instance.AlivePlayers.Contains(MCGalaxyPlayer); } }
+        public bool Dead { get { return Health <= 0 || Spectator || !respawned; } }
         public bool Exhausted { get { return Hunger < MCGalaxy.PVPZone.Config.Player.HungerExhausted; } }
         public bool Starving { get { return Health <= MCGalaxy.PVPZone.Config.Player.HungerStarving; } }
 
         public uint XP { get { return XPSystem.GetXP(MCGalaxyPlayer); } }
         public uint XPLevel { get { return XPSystem.GetXP(MCGalaxyPlayer); } }
+
+        bool respawned = true;
 
         DateTime nextHunger = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerDecayInterval);
         DateTime nextStarve = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerStarveInterval);
@@ -82,11 +93,13 @@ namespace PVPZone.Game.Player
                 SetHeldBlock(0);
                 SetHeldBlock((ushort)(lastHeld + 256));
             }
+            GuiHeldBlock();
         }
         public void Spawn()
         {
-            Inventory.SendInventoryOrder();
             Inventory.Clear();
+            Inventory.SendInventoryOrder();
+
             Util.ClearHotbar(MCGalaxyPlayer);
 
 
@@ -98,7 +111,7 @@ namespace PVPZone.Game.Player
             nextStarve = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerStarveInterval);
 
             SendGui();
-
+            respawned = true;
             //Testing
             /*Inventory.Add(ItemManager.PVPZoneItems.BlastBall, 50);
             Inventory.Add(ItemManager.PVPZoneItems.Firework, 50);
@@ -130,6 +143,8 @@ namespace PVPZone.Game.Player
                 XPSystem.ExpUp(damageHandler.Attacker.MCGalaxyPlayer, MCGalaxy.PVPZone.Config.XP.XPReward_Kill);
 
             XPSystem.ExpUp(MCGalaxyPlayer, MCGalaxy.PVPZone.Config.XP.XPReward_Die);
+
+            PVPZone.Game.Gamemodes.PVPZoneGame.OnKill(damageHandler);
         }
         public void OnDeath()
         {
@@ -137,7 +152,7 @@ namespace PVPZone.Game.Player
             HealthGolden = 0;
             Hunger = 0;
             Inventory.Clear();
-
+            respawned = false;
             SendGui();
         }
         public void Curse()//(string curse="Slowness")
@@ -156,18 +171,21 @@ namespace PVPZone.Game.Player
                 blockId = (ushort)(blockId + 256);
             MCGalaxyPlayer.Session.SendHoldThis(blockId, locked);
         }
-        public void DamageEffect(bool crit=false)
+        public void DamageEffect(bool crit=false, string effect="")
         {
             int ex = MCGalaxyPlayer.Pos.BlockX;
             int ey = MCGalaxyPlayer.Pos.BlockY;
             int ez = MCGalaxyPlayer.Pos.BlockZ;
 
-            string effect = crit ? "crit" : "pvp";
+            if (effect == "")
+                effect = crit ? "crit" : "pvp";
 
             Util.Effect(MCGalaxyPlayer.level, effect, ex, ey, ez);
         }
         public void UseItem()
         {
+            if (Dead) return;
+
             if (HeldItem == null)
                 return;
             var itemID = HeldItem.Block_BlockId;
@@ -183,6 +201,12 @@ namespace PVPZone.Game.Player
 
             if (DateTime.Now < nextAttack) return;
 
+            if (!Util.IsPVPLevel(MCGalaxyPlayer.Level))
+                return;
+
+            if (MCGalaxyPlayer.Level == PVPZoneGame.Instance.Map && !PVPZoneGame.Instance.RoundInProgress)
+                return;
+
             MCGalaxy.Player victim = Util.PlayerFrom(entityId);
 
             if (victim == null || victim == MCGalaxyPlayer)
@@ -191,6 +215,8 @@ namespace PVPZone.Game.Player
             PVPPlayer pvpVictim = PVPPlayer.Get(victim);
 
             if (pvpVictim == null) return;
+
+            if (pvpVictim.Dead) return;
             
             if (victim.Model == "shieldb3") return;
 
@@ -210,12 +236,22 @@ namespace PVPZone.Game.Player
 
             bool isCrit = (MCGalaxyPlayer.Pos.Y > victim.Pos.Y + 32);
 
-            int damage = (isCrit ? 2 : 1);
+            float damageMultiplier = (isCrit ? 1.5f : 1);
+            int damage = (int)Math.Ceiling(damageMultiplier);
+
+            DamageReason.DamageType damageType = DamageReason.DamageType.Punch;
 
             if (HeldItem != null)
-                damage += HeldItem.Damage;
+            {   if (HeldItem.Damage != null)
+                    damage = (int)(HeldItem.Damage * damageMultiplier);
+                if (HeldItem.DamageType != DamageReason.DamageType.None)
+                    damageType = HeldItem.DamageType;
+            }
 
-            pvpVictim.Damage(new DamageReason(DamageReason.DamageType.Punch, damage, pvpVictim, this));
+
+
+            
+            pvpVictim.Damage(new DamageReason(damageType, damage, pvpVictim, this));
 
             if (HeldItem != null)
                 HeldItem.OnHit(this, pvpVictim);
@@ -229,9 +265,10 @@ namespace PVPZone.Game.Player
                 MCGalaxyPlayer.Pos.Z - victim.Pos.Z
             );
 
-            float power = isCrit ? 1.5f : 0.8f;
+            float powerMultiplier = isCrit ? 1.5f : 0.8f;
+            float power = powerMultiplier;
             if (HeldItem != null)
-                power *= HeldItem.Knockback;
+                power = HeldItem.Knockback * powerMultiplier;
 
             Vec3F32 normalDir = Vec3F32.Normalise(dir);
             pvpVictim.Knockback(-normalDir.X, 0.5f, -normalDir.Z, power);
@@ -256,6 +293,9 @@ namespace PVPZone.Game.Player
                 return;
 
             if (damageHandler.Attacker != null && damageHandler.Attacker.MCGalaxyPlayer.Game.Referee)
+                return;
+
+            if (PVPZoneGame.Instance.Map == MCGalaxyPlayer.level && !PVPZoneGame.Instance.AlivePlayers.Contains(MCGalaxyPlayer))
                 return;
 
             if (HealthGolden > 0)
@@ -343,7 +383,7 @@ namespace PVPZone.Game.Player
         public void GuiHeldBlock()
         {
             int blockAmount = Inventory.Get(HeldBlock);
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.Status1, blockAmount == 0 ? "" : blockAmount.ToString());
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.Status2, blockAmount == 0 ? "" : "%e"+blockAmount.ToString());
         }
         public void GuiHint(string message)
         {

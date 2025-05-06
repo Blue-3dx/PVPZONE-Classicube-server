@@ -144,9 +144,16 @@ namespace PVPZone.Game.Map
                     continue;
                 if (loot.Position.Z != z)
                     continue;
+
                 loot.RemoveBlock();
                 SpawnedLoot[player.level].Remove(loot);
-                pvpPl.Pickup(loot.ItemId);
+
+                ushort lootItem = (ushort)(loot.ItemId - 256);
+                pvpPl.Pickup(
+                    loot.ItemId, 
+                    ItemManager.Items.ContainsKey(lootItem) ? ItemManager.Items[lootItem].PickupAmount : 1
+                );
+
                 Util.Effect(player.level, effects[rnd.Next(0, effects.Length-1)], x, y, z);
                 return true;
             }

@@ -13,6 +13,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         {
             this.RemoveOnUse = false;
             this.XPLevelRequired = 0;
+            this.PickupAmount = 10;
         }
     }
 }

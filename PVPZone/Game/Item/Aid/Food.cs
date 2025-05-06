@@ -10,6 +10,11 @@ namespace PVPZone.Game.Item.Weapon.Ranged
             player.HungerReplenish(1);
             return true;
         }
+        public override bool CanUse(PVPPlayer player)
+        {
+            if (player.Hunger >= MCGalaxy.PVPZone.Config.Player.MaxHunger) return false;
+            return base.CanUse(player);
+        }
         public override void OnHit(PVPPlayer attacker, PVPPlayer victim)
         {
 
@@ -18,7 +23,7 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         public Food(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)
         {
             this.RemoveOnUse = true;
-            this.XPLevelRequired = 10;
+            this.XPLevelRequired = 1;
             this.Cooldowntime = 1;
         }
     }

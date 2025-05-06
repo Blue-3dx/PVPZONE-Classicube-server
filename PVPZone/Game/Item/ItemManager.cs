@@ -1,4 +1,5 @@
-﻿using PVPZone.Game.Player;
+﻿using MCGalaxy;
+using PVPZone.Game.Player;
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +23,8 @@ namespace PVPZone.Game.Item
             Food1 = 116,
             Food2 = 117,
             Food3 = 118,
-            Food4 = 119
+            Food4 = 119,
+            TNT = Block.TNT
         }
 
         public static Dictionary<PVPPlayer, Dictionary<ushort, DateTime>> Cooldowns = new Dictionary<PVPPlayer, Dictionary<ushort, DateTime>>();
@@ -51,6 +53,8 @@ namespace PVPZone.Game.Item
             [(ushort)PVPZoneItems.Food2] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food2, textureId: 214, "Raw Beef"),
             [(ushort)PVPZoneItems.Food3] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food3, textureId: 215, "Steak"),
             [(ushort)PVPZoneItems.Food4] = new PVPZone.Game.Item.Weapon.Ranged.Food((ushort)PVPZoneItems.Food4, textureId: 229, "Apple"),
+
+            [(ushort)PVPZoneItems.TNT] = new PVPZone.Game.Item.Weapon.Ranged.TNT((ushort)PVPZoneItems.TNT),
         };
         
         public static void Cooldown(PVPPlayer player, ushort BlockId, float duration)

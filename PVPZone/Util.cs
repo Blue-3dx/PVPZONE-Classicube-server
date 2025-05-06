@@ -2,6 +2,8 @@
 using MCGalaxy;
 using System;
 using MCGalaxy.Network;
+using PVPZone.Game.Projectile;
+using PVPZone.Game.Projectile.Projectiles;
 
 namespace PVPZone
 {
@@ -58,6 +60,26 @@ namespace PVPZone
             }
             return null;
         }
+        static System.Random rnd = new System.Random();
+
+        static int rndDirection { get { return rnd.Next(0, 2) == 1 ? -1 : 1; } }
+        public static void FakeExplosionEffect(Level lvl, int cx, int cy, int cz)
+        {
+            for (int x = -1; x <= 1; x++)
+                for (int y = -1; y <= 1; y++) // cy to cy + 2, effectively cy-1 to cy+1
+                    for (int z = -1; z <= 1; z++)
+                    {
+                        int px = cx + x, py = cy + y, pz = cz + z;
+                        if (!lvl.IsValidPos(px, py, pz)) continue;
+                        ushort block = lvl.GetBlock((ushort)px, (ushort)py, (ushort)pz);
+                        if (block == Block.Air || block== Block.Invalid)
+                            continue;
+                        // MCGalaxy.Player.Console.Message($"Spawning ice at {px}{py}{pz}");
+                        Projectile.Throw(new Debris() { BlockId = block}, lvl, new Vec3F32((float)px, (float)py+3, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.5f), 0.5f, (float)(rnd.NextDouble() * rndDirection * 0.5f)), 0.5f);
+                        //lvl.Blockchange((ushort)px, (ushort)py, (ushort)pz, Block.Ice);
+                    }
+        }
+
 
         public static void Effect(Level level, string effect, int bx, int by, int bz )
         {

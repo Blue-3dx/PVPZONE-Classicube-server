@@ -46,7 +46,7 @@ namespace PVPZone.Game.Projectile
             }
             Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
 
-            MCGalaxy.Player hit = Util.PlayerAt(Thrower.MCGalaxyPlayer, blockPos);
+            MCGalaxy.Player hit = Thrower!=null? Util.PlayerAt(Thrower.MCGalaxyPlayer, blockPos) : Util.PlayerAt(Level, blockPos);
             if (hit != null)
             {
                 OnCollide(PVPPlayer.Get(hit));
@@ -75,17 +75,24 @@ namespace PVPZone.Game.Projectile
         public Projectile()
         {
         }
-        public static void Throw(Projectile projectile, PVPPlayer thrower, float power=1)
+        public static void Throw(Projectile projectile, Level level, Vec3F32 pos, Vec3F32 dir, float power = 1, PVPPlayer thrower=null)
         {
-            projectile.Level = thrower.MCGalaxyPlayer.Level;
-            projectile.Position = thrower.MCGalaxyPlayer.Pos.BlockCoords;
+            projectile.Level = level;
+            projectile.Velocity = dir;
+            projectile.Position = pos;
             projectile.PositionLast = Util.Round(projectile.Position);
-            Vec3F32 dir = DirUtils.GetDirVector(thrower.MCGalaxyPlayer.Rot.RotY, thrower.MCGalaxyPlayer.Rot.HeadX);
-            projectile.Velocity = new Vec3F32(dir.X * power, dir.Y * power, dir.Z * power);
             projectile.Thrower = thrower;
-          
             ProjectileManager.ProjectileAdd(projectile);
             projectile.OnCreation();
+        }
+        public static void Throw(Projectile projectile, PVPPlayer thrower, float power=1)
+        {
+            Level level = thrower.MCGalaxyPlayer.Level;
+            Vec3F32 pos = thrower.MCGalaxyPlayer.Pos.BlockCoords;
+
+            Vec3F32 dir = DirUtils.GetDirVector(thrower.MCGalaxyPlayer.Rot.RotY, thrower.MCGalaxyPlayer.Rot.HeadX);
+
+            Throw(projectile, level, pos, dir, power, thrower);
         }
 
     }

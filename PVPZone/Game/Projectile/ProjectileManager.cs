@@ -34,7 +34,7 @@ namespace PVPZone.Game.Projectile
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.ToString());
+                    MCGalaxy.Player.Console.Message(e.ToString());
                 }
 
                 Projectiles.RemoveAt(i);

@@ -142,7 +142,6 @@ namespace PVPZone.Game.Player
         }
         public void Curse()//(string curse="Slowness")
         {
-            //MCGalaxyPlayer.Extras["curse"] = curse;
             Command curseCmd = Command.Find("curse");
             if (curseCmd != null)
             {

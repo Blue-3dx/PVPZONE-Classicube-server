@@ -56,6 +56,9 @@ namespace PVPZone
             [DamageReason.DamageType.Explosion] = new string[] {
                 "{vicColor}{vicName} %fwas %eblown to pieces %fby {atkColor}{atkName}%f!",
             },
+            [DamageReason.DamageType.Debris] = new string[] {
+                "{vicColor}{vicName}%e's skull was shattered by falling rocks!",
+            },
             [DamageReason.DamageType.Frozen] = new string[] {
                 "{vicColor}{vicName} %fwas %bfrozen%f to %cdeath %fby {atkColor}{atkName}%f!",
             },

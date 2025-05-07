@@ -95,6 +95,9 @@ namespace PVPZone.Game.Gamemodes
             }
             DoRoundCountdown(MCGalaxy.PVPZone.Config.Round.Countdown);
 
+            if (Map == null) return;
+            if (!Running) return;
+
             foreach (var player in Map.players)
             {
                 PVPPlayer pvppl = PVPPlayer.Get(player);
@@ -108,12 +111,17 @@ namespace PVPZone.Game.Gamemodes
             Instance.UpdateAllStatus();
 
             Thread.Sleep(100);
+
+            if (!Running) return;
+            if (Map == null) return;
             MessageMap(CpeMessageType.Announcement, "%aBegin!!!!!");
-            while (Running && RoundInProgress && AlivePlayers.Count > 0)
+            while (Running && RoundInProgress && AlivePlayers.Count > 0 && Map != null)
             {
                 Thread.Sleep(1000);
             }
             Thread.Sleep(2000);
+            if (!Running) return;
+            if (Map == null) return;
             Map.Message("Starting new round...");
             Thread.Sleep(5000);
         }

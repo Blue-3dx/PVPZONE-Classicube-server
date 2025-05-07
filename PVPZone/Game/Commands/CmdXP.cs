@@ -99,8 +99,8 @@ namespace PVPZone.Game.Commands
             p.Message("&HShows your current XP, level, and how much XP is needed for the next level.");
             p.Message("&T/xp playername");
             p.Message("&HShows the XP info of the specified player.");
-            p.Message("&T/xp give password player amount");
-            p.Message("&HOnly players of level 10+ can use this to give XP to others.");
+            p.Message("&T/xp give player amount");
+            p.Message("&HGives XP to player");
         }
     }
 }

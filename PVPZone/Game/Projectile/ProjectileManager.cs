@@ -12,11 +12,13 @@ namespace PVPZone.Game.Projectile
         
         public static void Load()
         {
+            Projectiles.Clear();
             Task = Server.MainScheduler.QueueRepeat(ProjectileTick, null, TimeSpan.FromMilliseconds(50));
         }
         public static void Unload()
         {
             Server.MainScheduler.Cancel(Task);
+            Projectiles.Clear();
         }
 
         public static void ProjectileTick(SchedulerTask task)

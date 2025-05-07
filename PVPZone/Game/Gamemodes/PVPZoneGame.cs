@@ -154,10 +154,11 @@ namespace PVPZone.Game.Gamemodes
         public static void UnsetSpectator(MCGalaxy.Player p)
         {
             p.Send(Packet.HackControl(false, false, false, false, true, -1));
+
             Entities.GlobalSpawn(p, false);
+
             if (p.Extras.Contains("spectator"))
-                return;
-            p.Extras.Remove("spectator");
+                p.Extras.Remove("spectator");
         }
         public override void UpdateMapConfig()
         {

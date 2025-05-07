@@ -18,22 +18,20 @@ namespace PVPZone.Game.Commands
 
         private void GiveXP(MCGalaxy.Player p, string[] parts)
         {
-            p.Message("&cThis give option is disabled currently!.");
-            return; // Disable for now
-            // xpected format: /xp give player amount
-            if (parts.Length != 4)
+            // Expected format: /xp give player amount
+            if (parts.Length != 3)
             {
                 Help(p);
                 return;
             }
-            if (XPSystem.GetLevel(p) < 10)
+
+            if (p.Rank < LevelPermission.Operator)
             {
-                p.Message("&cYou need to be at least level 10 to give XP.");
+                p.Message("&cYou need to be Operator+ give XP.");
                 return;
             }
 
-            string targetName = parts[1];
-            MCGalaxy.Player target = PlayerInfo.FindMatches(p, targetName);
+            MCGalaxy.Player target = PlayerInfo.FindMatches(p, parts[1]);
             if (target == null)
             {
                 p.Message("&cPlayer not found.");
@@ -50,7 +48,6 @@ namespace PVPZone.Game.Commands
                 p.Message("&cInvalid amount.");
                 return;
             }
-
 
             XPSystem.ExpUp(target, amount);
             p.Message("&aYou have given " + target.name + " " + amount + " XP.");

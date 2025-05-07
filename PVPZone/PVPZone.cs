@@ -39,6 +39,7 @@ namespace MCGalaxy
             Command.Register(pvpZoneCommand);
             Command.Register(xpCommand);
 
+            PVPZoneGame.Instance = new PVPZoneGame();
             PVPZoneGame.Instance.Config.Path = "plugins/PVP/game.properties";
             if (!Directory.Exists("plugins/PVP"))
                 Directory.CreateDirectory("plugins/PVP");
@@ -60,8 +61,11 @@ namespace MCGalaxy
             Command.Unregister(pvpZoneCommand);
             Command.Unregister(xpCommand);
 
-            if (PVPZoneGame.Instance.Running) 
+            if (PVPZoneGame.Instance.Running)
+            {
                 PVPZoneGame.Instance.End();
+                PVPZoneGame.Instance.Running = false;
+            }
         }
     }
 }

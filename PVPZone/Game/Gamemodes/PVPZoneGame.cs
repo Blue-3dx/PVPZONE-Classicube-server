@@ -93,7 +93,7 @@ namespace PVPZone.Game.Gamemodes
 
             foreach (var player in Map.players)
             {
-                UnsetSpectator(player);
+                Util.UnsetSpectator(player);
                 PlayerActions.Respawn(player);
             }
             DoRoundCountdown(MCGalaxy.PVPZone.Config.Round.Countdown);
@@ -120,10 +120,12 @@ namespace PVPZone.Game.Gamemodes
             MessageMap(CpeMessageType.Announcement, "%aBegin!!!!!");
             while (Running && RoundInProgress && AlivePlayers.Count > 0 && Map != null)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 if (DateTime.Now > nextLoot)
                 {
-                    LootManager.SpawnLoot(Map);
+                    for (int i=0;i<4;i++)
+                        LootManager.SpawnLoot(Map);
+                   
                     nextLoot = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Item.LootItemSpawnInteveral);
                 }
             }
@@ -157,37 +159,11 @@ namespace PVPZone.Game.Gamemodes
             return Config;
         }
 
-        public static void SetSpectator(MCGalaxy.Player p)
-        {
-            p.Send(Packet.HackControl(true, true, true, true, true, -1));
-            Entities.GlobalDespawn(p, false);
-            PVPZoneGame.Instance.UpdateStatus1(p);
-            if (p.Extras.Contains("spectator"))
-                return;
-            p.Extras["spectator"] = true;
-            p.Message("%eYou are %cdead! %fSpectate the game to your liking!");
-        }
-        public static void UnsetSpectator(MCGalaxy.Player p)
-        {
-            p.Send(Packet.HackControl(false, false, false, false, true, -1));
-
-            Entities.GlobalSpawn(p, false);
-
-            if (p.Extras.Contains("spectator"))
-                p.Extras.Remove("spectator");
-        }
         public override void UpdateMapConfig()
         {
             MapConfig = new PVPMapConfig();
             MapConfig.SetDefaults(Map);
             MapConfig.Load(Map.name);
-
-            /*foreach (var motd in customMotdAddition.Split(' '))
-            {
-                if (!Map.Config.MOTD.Contains(motd))
-                    Map.Config.MOTD += " " + customMotdAddition;
-            }
-            Map.Config.MOTD = Map.Config.MOTD.Replace("ignore", "").Trim();*/
         }
         protected override List<MCGalaxy.Player> GetPlayers()
         {
@@ -219,9 +195,8 @@ namespace PVPZone.Game.Gamemodes
         }
         public override void EndRound() {
             foreach(var player in GetPlayers())
-            {
-                UnsetSpectator(player);
-            }
+                 Util.UnsetSpectator(player);
+            
             RoundInProgress = false;
             KillLeaderboard.Clear();
 
@@ -243,6 +218,7 @@ namespace PVPZone.Game.Gamemodes
 
             base.UnhookEventHandlers();
         }
+   
         public void Gameover(MCGalaxy.Player winner=null)
         {
             string message = $"%c No winners!";
@@ -281,7 +257,7 @@ namespace PVPZone.Game.Gamemodes
             Instance.AlivePlayers.Remove(damagedata.Victim.MCGalaxyPlayer);
             Instance.CheckWin();
 
-            SetSpectator(damagedata.Victim.MCGalaxyPlayer);
+            Util.SetSpectator(damagedata.Victim.MCGalaxyPlayer);
 
             Instance.UpdateAllStatus();
         }
@@ -317,13 +293,18 @@ namespace PVPZone.Game.Gamemodes
         void HandlePlayerSpawn(MCGalaxy.Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning)
         {
             if (!Running) return;
-            if (p.level != Map) return;
+            if (p.level != Map)
+            {
+                if (AlivePlayers.Contains(p))
+                    PlayerLeftGame(p);
+                return;
+            }
 
-            pos = Position.FromFeetBlockCoords(MapConfig.Spawn.X, MapConfig.Spawn.Y, MapConfig.Spawn.Z);
+                pos = Position.FromFeetBlockCoords(MapConfig.Spawn.X, MapConfig.Spawn.Y, MapConfig.Spawn.Z);
 
             if (RoundInProgress)
             {
-                SetSpectator(p);
+                Util.SetSpectator(p);
                 return;
             }
             PVPPlayer pvp = PVPPlayer.Get(p);
@@ -356,19 +337,20 @@ namespace PVPZone.Game.Gamemodes
                 KillLeaderboard.TryRemove(p, out _);
 
             if (AlivePlayers.Contains(p))
-            {
                 AlivePlayers.Remove(p);
-                CheckWin();
-            }
+
+            UpdateAllStatus1();
+            CheckWin();
+         
         }
         public override void PlayerJoinedGame(MCGalaxy.Player p)
         {
             if (RoundInProgress)
             {
-                SetSpectator(p);
+                Util.SetSpectator(p);
                 return;
             }
-            UnsetSpectator(p);
+            Util.UnsetSpectator(p);
             PVPPlayer pvppl = PVPPlayer.Get(p);
             if (pvppl == null) return;
 

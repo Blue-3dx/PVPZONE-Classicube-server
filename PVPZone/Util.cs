@@ -96,9 +96,8 @@ namespace PVPZone
                         ushort block = lvl.GetBlock((ushort)px, (ushort)py, (ushort)pz);
                         if (block == Block.Air || block== Block.Invalid)
                             continue;
-                        // MCGalaxy.Player.Console.Message($"Spawning ice at {px}{py}{pz}");
-                        Projectile.Throw(new Debris() { BlockId = block}, lvl, new Vec3F32((float)px, (float)py+3, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.5f), 0.5f, (float)(rnd.NextDouble() * rndDirection * 0.5f)), 0.5f);
-                        //lvl.Blockchange((ushort)px, (ushort)py, (ushort)pz, Block.Ice);
+
+                        Projectile.Throw(new Debris() { BlockId = block}, lvl, new Vec3F32((float)px, (float)py+2, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.4f), 0.5f + (float)(rnd.NextDouble()* 0.25f), (float)(rnd.NextDouble() * rndDirection * 0.4f)), 0.5f);
                     }
         }
 
@@ -145,6 +144,26 @@ namespace PVPZone
             {
                 SetHotbar(p, i, 0);
             }
+        }
+
+        public static void SetSpectator(MCGalaxy.Player p)
+        {
+            p.Send(Packet.HackControl(true, true, true, true, true, -1));
+            Entities.GlobalDespawn(p, false);
+
+            if (p.Extras.Contains("spectator"))
+                return;
+            p.Extras["spectator"] = true;
+            p.Message("%eYou are %cdead! %fSpectate the game to your liking!");
+        }
+        public static void UnsetSpectator(MCGalaxy.Player p)
+        {
+            p.Send(Packet.HackControl(false, false, false, false, true, -1));
+
+            Entities.GlobalSpawn(p, false);
+
+            if (p.Extras.Contains("spectator"))
+                p.Extras.Remove("spectator");
         }
     }
 }

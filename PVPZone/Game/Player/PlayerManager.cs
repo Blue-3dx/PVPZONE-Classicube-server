@@ -3,7 +3,6 @@ using MCGalaxy.Events.PlayerEvents;
 using MCGalaxy.Network;
 using MCGalaxy.Tasks;
 using PVPZone.Game.Item;
-using PVPZone.Game.Map;
 using PVPZone.Game.Projectile;
 using System;
 using BlockID = System.UInt16;
@@ -76,7 +75,7 @@ namespace PVPZone.Game.Player
             PVPPlayer pl = PVPPlayer.Get(player);
 
             if (pl == null) return;
-
+            
             if (ProjectileManager.PlayerClick(player, button, act, yaw, pitch, entity, x, y, z, face))
                 return;
 
@@ -111,6 +110,7 @@ namespace PVPZone.Game.Player
         private static void PlayerSentMap(MCGalaxy.Player p, Level prevLevel, Level level)
         {
             SendMiningUnbreakableMessage(p);
+            ProjectileManager.SendProjectileData(p);
         }
         private static void PlayerTick(SchedulerTask task)
         {

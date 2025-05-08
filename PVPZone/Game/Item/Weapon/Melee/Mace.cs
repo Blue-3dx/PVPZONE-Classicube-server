@@ -8,9 +8,9 @@ namespace PVPZone.Game.Item.Weapon.Melee
         {
             base.OnHit(attacker, victim);
 
-            if (attacker != null && attacker.MCGalaxyPlayer.Pos.BlockY > victim.MCGalaxyPlayer.Pos.BlockY + 2)
+            if (attacker != null && attacker.MCGalaxyPlayer.Pos.BlockY >= victim.MCGalaxyPlayer.Pos.BlockY + 2)
             {
-                attacker.Knockback(0, 5, 0);
+                attacker.Knockback(0, 6.5f, 0);
                 victim.DamageEffect(effect: "explosion");
             }
 

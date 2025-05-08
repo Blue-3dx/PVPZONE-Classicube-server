@@ -378,7 +378,7 @@ namespace PVPZone.Game.Player
         }
         public void GuiHealthExtra()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, this.HealthGolden != 0 ? Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) : "");
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, this.HealthGolden != 0 ? Util.HealthBar("↨", this.HealthGolden, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) : "");
         }
         public void GuiHeldBlock()
         {

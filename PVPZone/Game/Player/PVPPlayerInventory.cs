@@ -19,7 +19,7 @@ namespace PVPZone.Game.Player
         public void SendInventoryOrder()
         {
             ushort x = 1;
-            for (ushort i = 0; i < 767; i++)
+            for (ushort i = 0; i <= 767; i++)
             {
                 if (!Has(i) && !pl.MCGalaxyPlayer.Game.Referee)
                 {

@@ -85,9 +85,9 @@ namespace PVPZone.Game.Player
         }
         public void Pickup(ushort ItemId, int amount=1)
         {
-            Inventory.Add((ushort)(ItemId - 256), amount);
+            Inventory.Add((ushort)(ItemId), amount);
             ushort lastHeld = HeldBlock;
-            SetHeldBlock(ItemId);
+            SetHeldBlock((ushort)(ItemId+256));
             if (lastHeld != 0)
             {
                 SetHeldBlock(0);
@@ -242,8 +242,8 @@ namespace PVPZone.Game.Player
             DamageReason.DamageType damageType = DamageReason.DamageType.Punch;
 
             if (HeldItem != null)
-            {   if (HeldItem.Damage != null)
-                    damage = (int)(HeldItem.Damage * damageMultiplier);
+            {
+                damage = (int)(HeldItem.Damage * damageMultiplier);
                 if (HeldItem.DamageType != DamageReason.DamageType.None)
                     damageType = HeldItem.DamageType;
             }
@@ -374,11 +374,11 @@ namespace PVPZone.Game.Player
         }
         public void GuiHunger()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, Util.HealthBar("←", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHunger));
+           // MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight3, Util.HealthBar("←", this.Hunger, MCGalaxy.PVPZone.Config.Player.MaxHunger));
         }
         public void GuiHealthExtra()
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight3, this.HealthGolden != 0 ? Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) : "");
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, this.HealthGolden != 0 ? Util.HealthBar("↨", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) : "");
         }
         public void GuiHeldBlock()
         {
@@ -397,13 +397,13 @@ namespace PVPZone.Game.Player
                 lastHeldBlock = HeldBlock;
                 GuiHeldBlock();
             }
-            if (DateTime.Now > nextHunger)
+            /*if (DateTime.Now > nextHunger)
             {
                 if (Hunger > 0)
                     Hunger--;
                 nextHunger = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerDecayInterval);
-            }
-            if (!Exhausted && !Starving && DateTime.Now > nextHeal)
+            }*/
+            /*if (!Exhausted && !Starving && DateTime.Now > nextHeal)
             {
                 nextHeal = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HealInterval);
                 Heal(1);
@@ -412,7 +412,7 @@ namespace PVPZone.Game.Player
             {
                 nextStarve = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Player.HungerStarveInterval);
                 Damage(new DamageReason(DamageReason.DamageType.Starve, 1, this));
-            }
+            }*/
         }
     }
 }

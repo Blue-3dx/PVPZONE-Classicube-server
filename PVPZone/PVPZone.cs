@@ -23,7 +23,7 @@ namespace MCGalaxy
         public static CmdCurse curseCommand = new CmdCurse();
         public static CmdPVPZone pvpZoneCommand = new CmdPVPZone();
         public static Cmdxp xpCommand = new Cmdxp();
-        
+        public static CmdGiveItem giveCommand = new CmdGiveItem();
         public override void Load(bool startup)
         {
             Config = new PVPZoneConfig();
@@ -33,11 +33,11 @@ namespace MCGalaxy
             ItemManager.Load();
             CurseManager.Load();
             XPSystem.Load();
-            LootManager.Load();
 
             Command.Register(curseCommand);
             Command.Register(pvpZoneCommand);
             Command.Register(xpCommand);
+            Command.Register(giveCommand);
 
             PVPZoneGame.Instance = new PVPZoneGame();
             PVPZoneGame.Instance.Config.Path = "plugins/PVP/game.properties";
@@ -55,11 +55,11 @@ namespace MCGalaxy
             ItemManager.Unload();
             CurseManager.Unload();
             XPSystem.Unload();
-            LootManager.Unload();
 
             Command.Unregister(curseCommand);
             Command.Unregister(pvpZoneCommand);
             Command.Unregister(xpCommand);
+            Command.Unregister(giveCommand);
 
             if (PVPZoneGame.Instance.Running)
             {

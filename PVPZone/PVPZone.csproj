@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Commands\CmdCurse.cs" />
+    <Compile Include="Game\Commands\CmdGiveItem.cs" />
     <Compile Include="Game\Commands\CmdPvpZone.cs" />
     <Compile Include="Game\Commands\CmdXP.cs" />
     <Compile Include="Game\Item\Aid\Food.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Game\Player\PlayerManager.cs" />
     <Compile Include="Game\Player\XPSystem.cs" />
     <Compile Include="Game\Projectile\Projectile.cs" />
+    <Compile Include="Game\Projectile\ProjectileLevel.cs" />
     <Compile Include="Game\Projectile\ProjectileManager.cs" />
     <Compile Include="Game\Item\PVPZoneItem.cs" />
     <Compile Include="Game\Item\ItemManager.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Game\Projectile\Projectiles\Debris.cs" />
     <Compile Include="Game\Projectile\Projectiles\Firework.cs" />
     <Compile Include="Game\Projectile\Projectiles\BlastBall.cs" />
+    <Compile Include="Game\Projectile\Projectiles\Loot.cs" />
     <Compile Include="Game\Projectile\Projectiles\Snowball.cs" />
     <Compile Include="Game\Projectile\Projectiles\Arrow.cs" />
     <Compile Include="Game\Projectile\Projectiles\Icebomb.cs" />

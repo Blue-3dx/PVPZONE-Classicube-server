@@ -9,6 +9,8 @@ using MCGalaxy.Maths;
 using MCGalaxy.Network;
 using PVPZone.Game.Map;
 using PVPZone.Game.Player;
+using PVPZone.Game.Projectile;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +68,7 @@ namespace PVPZone.Game.Gamemodes
         public PVPZoneGame() { 
             Picker = new SimpleLevelPicker();
         }
+        public DateTime nextLoot = DateTime.Now;
         public override string GameName { get { return "PVP"; } }
         protected override string WelcomeMessage
         {
@@ -84,7 +87,7 @@ namespace PVPZone.Game.Gamemodes
 
             UpdateMapConfig();
 
-            LootManager.ClearLoot(Map);
+            ProjectileManager.ClearMap(Map);
 
             KillLeaderboard.Clear();
 
@@ -118,6 +121,11 @@ namespace PVPZone.Game.Gamemodes
             while (Running && RoundInProgress && AlivePlayers.Count > 0 && Map != null)
             {
                 Thread.Sleep(1000);
+                if (DateTime.Now > nextLoot)
+                {
+                    LootManager.SpawnLoot(Map);
+                    nextLoot = DateTime.Now.AddSeconds(MCGalaxy.PVPZone.Config.Item.LootItemSpawnInteveral);
+                }
             }
             Thread.Sleep(2000);
             if (!Running) return;
@@ -217,7 +225,7 @@ namespace PVPZone.Game.Gamemodes
             RoundInProgress = false;
             KillLeaderboard.Clear();
 
-            LootManager.ClearLoot(Map);
+            ProjectileManager.ClearMap(Map);
         }
         protected override void HookEventHandlers()
         {

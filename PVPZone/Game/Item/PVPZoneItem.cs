@@ -10,7 +10,7 @@ namespace PVPZone.Game.Item
 
         public int  XPLevelRequired = 0;
 
-        public int Damage = 0;
+        public int Damage = 1;
 
         public float Knockback = 1f;
 

@@ -4,6 +4,7 @@ using MCGalaxy.Network;
 using MCGalaxy.Tasks;
 using PVPZone.Game.Item;
 using PVPZone.Game.Map;
+using PVPZone.Game.Projectile;
 using System;
 using BlockID = System.UInt16;
 namespace PVPZone.Game.Player
@@ -76,7 +77,7 @@ namespace PVPZone.Game.Player
 
             if (pl == null) return;
 
-            if (LootManager.PlayerClick(player, button, act, yaw, pitch, entity, x, y, z, face))
+            if (ProjectileManager.PlayerClick(player, button, act, yaw, pitch, entity, x, y, z, face))
                 return;
 
             if (button == MouseButton.Left)

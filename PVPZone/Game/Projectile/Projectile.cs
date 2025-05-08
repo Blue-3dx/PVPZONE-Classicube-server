@@ -1,4 +1,5 @@
-﻿using MCGalaxy;
+﻿using System;
+using MCGalaxy;
 using MCGalaxy.Maths;
 using PVPZone.Game.Player;
 
@@ -12,6 +13,8 @@ namespace PVPZone.Game.Projectile
 
         public float Drag = 0.99f;
 
+        public bool Destroy = false;
+
         public Vec3F32 Position;
         public Vec3U16 PositionLast;
 
@@ -19,6 +22,15 @@ namespace PVPZone.Game.Projectile
 
         public Level Level;
 
+        public DateTime Expire;
+
+        public float ExpireTime = 120;
+
+        public bool DestroyOnContact = true;
+
+        public bool Moving = true;
+
+        public bool UpdatePos = false;
 
         public PVPPlayer Thrower = null;
 
@@ -31,30 +43,47 @@ namespace PVPZone.Game.Projectile
         {
 
         }
-        public bool Tick()
+        public virtual void OnClick(PVPPlayer clicker)
         {
 
-            Vec3U16 blockPos = Util.Round(Position);
-
-            ushort nextBlock = Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z);
-
-            if (nextBlock == Block.Invalid || nextBlock != Block.Air)
-            {
-                Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
-                OnCollide(null);
+        }
+        public bool Tick()
+        {
+            if (DateTime.Now > Expire)
                 return false;
-            }
-            Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
 
-            MCGalaxy.Player hit = Thrower!=null? Util.PlayerAt(Thrower.MCGalaxyPlayer, blockPos) : Util.PlayerAt(Level, blockPos);
+            if (!Moving)
+                return true;
+
+            Vec3U16 blockPos = Util.Round(Position);
+            Vec3U16 nextBlockPos = Util.Round(Position + Velocity);
+            ushort nextBlock = Level.GetBlock(nextBlockPos.X, nextBlockPos.Y, nextBlockPos.Z);
+            ushort currentBlock = Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z);
+
+            if (nextBlock == Block.Invalid || currentBlock == Block.Invalid)
+                return false;
+
+            MCGalaxy.Player hit = Thrower != null ? Util.PlayerAt(Thrower.MCGalaxyPlayer, blockPos) : Util.PlayerAt(Level, blockPos);
             if (hit != null)
             {
                 OnCollide(PVPPlayer.Get(hit));
-                return false;
+                Moving = false;
+                return !DestroyOnContact;
             }
 
-            Level.BroadcastChange(blockPos.X, blockPos.Y, blockPos.Z, BlockId);
+            if (nextBlock != Block.Air)
+            {
+                //Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
+                OnCollide(null);
+                Moving = false;
+                return !DestroyOnContact;
+            }
+            //Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
 
+    
+            
+            //Level.BroadcastChange(blockPos.X, blockPos.Y, blockPos.Z, BlockId);
+     
             PositionLast = blockPos;
 
             Position += Velocity;
@@ -64,6 +93,8 @@ namespace PVPZone.Game.Projectile
             Velocity.Z *= Drag;
 
             Velocity.Y -= Gravity;
+
+            UpdatePos = true;
 
             return true;
 
@@ -83,7 +114,9 @@ namespace PVPZone.Game.Projectile
             projectile.PositionLast = Util.Round(projectile.Position);
             projectile.Thrower = thrower;
             ProjectileManager.ProjectileAdd(projectile);
+            projectile.Expire = DateTime.Now.AddSeconds(projectile.ExpireTime);
             projectile.OnCreation();
+
         }
         public static void Throw(Projectile projectile, PVPPlayer thrower, float power=1)
         {
@@ -93,6 +126,10 @@ namespace PVPZone.Game.Projectile
             Vec3F32 dir = DirUtils.GetDirVector(thrower.MCGalaxyPlayer.Rot.RotY, thrower.MCGalaxyPlayer.Rot.HeadX);
 
             Throw(projectile, level, pos, dir, power, thrower);
+        }
+        public static void Drop(Projectile projectile, Level level, ushort x, ushort y, ushort z)
+        {
+            Throw(projectile, level, new Vec3F32((float)x,(float)y,(float)z), new Vec3S32(0,0,0));
         }
 
     }

@@ -7,12 +7,14 @@ namespace PVPZone.Game.Item.Weapon.Ranged
         public override bool Use(PVPPlayer player)
         {
             if (!base.Use(player)) return false;
-            player.HungerReplenish(1);
+            //player.HungerReplenish(1);
+            player.Heal(2);
             return true;
         }
         public override bool CanUse(PVPPlayer player)
         {
-            if (player.Hunger >= MCGalaxy.PVPZone.Config.Player.MaxHunger) return false;
+            //if (player.Hunger >= MCGalaxy.PVPZone.Config.Player.MaxHunger) return false;
+            if (player.Health >= MCGalaxy.PVPZone.Config.Player.MaxHealth) return false;
             return base.CanUse(player);
         }
         public override void OnHit(PVPPlayer attacker, PVPPlayer victim)

@@ -53,8 +53,11 @@ namespace PVPZone.Game.Projectile
             if (!ProjectileLevels.ContainsKey(player.level))
                 return false;
             PVPPlayer pvpPlayer = PVPPlayer.Get(player);
-            if (pvpPlayer == null)
-                return false;
+
+            if (pvpPlayer == null) return false;
+            if (pvpPlayer.Dead) return false;
+            if (pvpPlayer.Spectator) return false;
+
             ProjectileLevels.TryGetValue(player.level, out ProjectileLevel prLevel);
             if (prLevel == null)
                 return false;

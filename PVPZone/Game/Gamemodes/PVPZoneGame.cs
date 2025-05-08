@@ -302,7 +302,7 @@ namespace PVPZone.Game.Gamemodes
 
                 pos = Position.FromFeetBlockCoords(MapConfig.Spawn.X, MapConfig.Spawn.Y, MapConfig.Spawn.Z);
 
-            if (RoundInProgress && !AlivePlayers.Contains(p))
+            if (RoundInProgress)
             {
                 Util.SetSpectator(p);
                 return;

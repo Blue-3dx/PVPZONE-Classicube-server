@@ -41,7 +41,6 @@ namespace PVPZone.Game.Projectile.Projectiles
             this.DestroyOnContact = false;
             this.ExpireTime = MCGalaxy.PVPZone.Config.Item.LootItemExpiryTime;
             this.Expire = DateTime.Now.AddSeconds(ExpireTime);
-            this.Gravity = 0.03f;
         }
     }
 }

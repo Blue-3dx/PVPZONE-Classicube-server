@@ -27,6 +27,27 @@ namespace PVPZone.Game.Projectile
         {
             ProjectileLevels.Remove(level);
         }
+        public static void SendProjectileData(MCGalaxy.Player pl)
+        {
+            if (pl.level == null || !ProjectileLevels.ContainsKey(pl.level))
+                return;
+
+            if (!ProjectileLevels.TryGetValue(pl.level, out var projectilelevel))
+                return;
+
+            projectilelevel.SendVisualUpdate(pl);
+        }
+        public static List<Projectile> GetProjectiles(Level level)
+        {
+            if (level == null || !ProjectileLevels.ContainsKey(level))
+                return new List<Projectile>();
+
+            if (!ProjectileLevels.TryGetValue(level, out var projectilelevel))
+                return new List<Projectile>();
+
+            return projectilelevel.Projectiles.Items.ToList();
+
+        }
         public static bool PlayerClick(MCGalaxy.Player player, MouseButton button, MouseAction act, ushort yaw, ushort pitch, byte entity, ushort x, ushort y, ushort z, TargetBlockFace face)
         {
             if (!ProjectileLevels.ContainsKey(player.level))

@@ -9,7 +9,9 @@ namespace PVPZone.Game.Item.Weapon.Ranged
             if (!base.Use(player)) return false;
 
             Projectile.Projectile.Throw(new Projectile.Projectiles.WindCharge(), player, 2f);
-
+            byte rotx = player.MCGalaxyPlayer.Rot.HeadX;
+            if (rotx <= 64 && rotx >= 51)
+                player.Knockback(0, 8, 0);
             return true;
         }
         public Windcharge(ushort id, ushort textureId = 0, string Name = "") : base(id, textureId, Name)

@@ -24,19 +24,18 @@ namespace PVPZone
     }
     public class PVPZoneConfig_XP
     {
-        public string ChatPrefix = "&2[%e{lvl}&2] ";
-        public string XPMsg_LevelUp = "&aYou leveled up to level %e{lvl}!";
+        public string ChatPrefix = "%5[%e{lvl}%5] ";
+        public string XPMsg_LevelUp = "%5] {pl} %aleveled up to level %e{lvl}%a!";
         public string XPMsg_XPUp = "%a+%e{xp}%axp";
         public uint XPReward_Kill = 5;
         public uint XPReward_Die = 2;
-        
     }
     public class PVPZoneConfig_Item {
-        public string XPMessage = "%cYou need to be level {xp}+ to use this item!";
+        public string XPMessage = "%cYou need to be level %e{xp}+%c to use this item!";
         public string Cooldownmessage = "%cCooldown: %e{time} %fseconds!";
-        public float LootItemSpawnInteveral = 2.5f;
+        public float LootItemSpawnInteveral = 5f;
         public float LootItemExpiryTime = 60f;
-        public int LootItemMax = 80;
+        public int LootItemMax = 100;
     }
 
     public class PVPZoneConfig_Round
@@ -72,7 +71,7 @@ namespace PVPZone
                 "{vicColor}{vicName} %fwas %estabbed to death %fby {atkColor}{atkName}%f!",
             },
             [DamageReason.DamageType.Mace] = new string[] {
-                "{vicColor}{vicName} %fwas %ecrushed to death with a mace %fby {atkColor}{atkName}%f!",
+                "{vicColor}{vicName} %fwas %ecrushed with a mace %fby {atkColor}{atkName}%f!",
             },
             [DamageReason.DamageType.Fire] = new string[] {
                 "{vicColor}{vicName} %eperished in %cflames!",

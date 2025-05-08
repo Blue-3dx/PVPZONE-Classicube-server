@@ -53,8 +53,15 @@ namespace PVPZone.Game.Player
         {
             uint newLevel = GetLevel(pl) + amount;
             SetLevel(pl, newLevel);
-
-            pl.Message(MCGalaxy.PVPZone.Config.XP.XPMsg_LevelUp.Replace("{lvl}", newLevel.ToString()));
+            string msg = MCGalaxy.PVPZone.Config.XP.XPMsg_LevelUp.Replace("{lvl}", newLevel.ToString());
+            string msgGlobal = msg.Replace("{pl}", pl.ColoredName);
+            pl.Message(msg.Replace("{pl}", "%aYou"));
+            foreach(var p in PlayerInfo.Online.Items)
+            {
+                if (pl == p || p.level != pl.level)
+                    continue;
+                p.Message(msgGlobal);
+            }
         }
         public static void ExpUp(MCGalaxy.Player pl, uint amount = 1)
         {

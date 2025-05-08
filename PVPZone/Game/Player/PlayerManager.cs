@@ -111,6 +111,7 @@ namespace PVPZone.Game.Player
         private static void PlayerSentMap(MCGalaxy.Player p, Level prevLevel, Level level)
         {
             SendMiningUnbreakableMessage(p);
+            ProjectileManager.SendProjectileData(p);
         }
         private static void PlayerTick(SchedulerTask task)
         {

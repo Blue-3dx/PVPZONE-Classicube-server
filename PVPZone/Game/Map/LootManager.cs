@@ -1,8 +1,8 @@
 ﻿using MCGalaxy;
 using MCGalaxy.Tasks;
 using PVPZone.Game.Item;
+using PVPZone.Game.Projectile;
 using System;
-using System.Linq;
 
 namespace PVPZone.Game.Map
 {
@@ -15,11 +15,11 @@ namespace PVPZone.Game.Map
         
         public static void SpawnLoot(Level level)
         {
+            if (level == null) return;
             if (level.players.Count == 0) { return; }
-            //MCGalaxy.Player.Console.Message($"Spawning loot");
-
-            ItemManager.PVPZoneItems[] items = Enum.GetValues(typeof(ItemManager.PVPZoneItems)).Cast<ItemManager.PVPZoneItems>().ToArray();
-            ushort block = (ushort)items[rnd.Next(items.Count() - 1)];
+            if (ProjectileManager.GetProjectiles(level).Count >= MCGalaxy.PVPZone.Config.Item.LootItemMax)
+                return;
+            ushort block = (ushort)ItemManager.GetRandomItem();
 
             ushort x = (ushort)rnd.Next(0, level.Width - 1);
             ushort z = (ushort)rnd.Next(0, level.Length - 1);

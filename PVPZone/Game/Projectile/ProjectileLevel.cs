@@ -2,7 +2,6 @@
 using MCGalaxy.Maths;
 using MCGalaxy.Network;
 using System;
-using System.Collections.Generic;
 
 namespace PVPZone.Game.Projectile
 {
@@ -28,7 +27,29 @@ namespace PVPZone.Game.Projectile
             }
             return null;
         }
+        public void SendVisualUpdate(MCGalaxy.Player pl)
+        {
+            BufferedBlockSender sender = new BufferedBlockSender(pl);
+            LoadBufferedBlockSender(sender);
+            sender.Flush();
+        }
+        private void LoadBufferedBlockSender(BufferedBlockSender sender)
+        {
+            foreach (Projectile prj in Projectiles.Items)
+            {
+                if (!prj.UpdatePos) continue;
 
+                prj.UpdatePos = false;
+
+                Vec3U16 blockPos = Util.Round(prj.Position);
+                Vec3U16 lastBlockPos = prj.PositionLast;
+
+                if (Level.IsValidPos(lastBlockPos))
+                    sender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z));
+                if (Level.IsValidPos(blockPos))
+                    sender.Add(Level.PosToInt(blockPos.X, blockPos.Y, blockPos.Z), prj.BlockId);
+            }
+        }
         public void Tick()
         {
 
@@ -57,20 +78,7 @@ namespace PVPZone.Game.Projectile
                 Projectiles.Remove(projectile);
                 i--;
             }
-            foreach (Projectile prj in Projectiles.Items)
-            {
-                if (!prj.UpdatePos) continue;
-
-                prj.UpdatePos = false;
-
-                Vec3U16 blockPos = Util.Round(prj.Position);
-                Vec3U16 lastBlockPos = prj.PositionLast;
-
-                if (Level.IsValidPos(blockPos))
-                    BlockSender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z));
-                if (Level.IsValidPos(blockPos))
-                    BlockSender.Add(Level.PosToInt(blockPos.X, blockPos.Y, blockPos.Z), prj.BlockId);   
-            }
+            LoadBufferedBlockSender(BlockSender);
             BlockSender.Flush();
         }
 

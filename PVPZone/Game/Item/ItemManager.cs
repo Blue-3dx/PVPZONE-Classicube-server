@@ -2,6 +2,7 @@
 using PVPZone.Game.Player;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PVPZone.Game.Item
 {
@@ -62,6 +63,19 @@ namespace PVPZone.Game.Item
 
             [(ushort)PVPZoneItems.Sword] = new PVPZone.Game.Item.Weapon.Melee.Sword((ushort)PVPZoneItems.Sword, textureId: 204, "Iron Sword"),
         };
+        public static PVPZoneItems[] GetItemArray()
+        {
+            return Enum.GetValues(typeof(PVPZoneItems)).Cast<PVPZoneItems>().ToArray();
+        }
+        static System.Random rnd = new System.Random();
+        public static PVPZoneItems GetRandomItem()
+        {
+            var itemArray = GetItemArray();
+            var item = itemArray[rnd.Next(0, itemArray.Count())];
+            if (item == PVPZoneItems.GoldenApple)
+                return itemArray[rnd.Next(0, itemArray.Count())];
+            return item;
+        }
         
         public static void Cooldown(PVPPlayer player, ushort BlockId, float duration)
         {

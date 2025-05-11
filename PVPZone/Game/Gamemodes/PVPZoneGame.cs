@@ -1,8 +1,6 @@
 ﻿using MCGalaxy;
 using MCGalaxy.Config;
-using MCGalaxy.DB;
 using MCGalaxy.Events.EntityEvents;
-using MCGalaxy.Events.GameEvents;
 using MCGalaxy.Events.PlayerEvents;
 using MCGalaxy.Games;
 using MCGalaxy.Maths;
@@ -87,7 +85,7 @@ namespace PVPZone.Game.Gamemodes
 
             UpdateMapConfig();
 
-            ProjectileManager.ClearMap(Map);
+            Util.ClearCustomMapData(Map);
 
             KillLeaderboard.Clear();
 

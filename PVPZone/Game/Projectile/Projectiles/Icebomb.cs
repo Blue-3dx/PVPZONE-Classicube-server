@@ -37,14 +37,12 @@ namespace PVPZone.Game.Projectile.Projectiles
                         if (!lvl.IsValidPos(px, py, pz)) continue;
                         if (lvl.GetBlock((ushort)px, (ushort)py, (ushort)pz) != Block.Air)
                             continue;
-                       // MCGalaxy.Player.Console.Message($"Spawning ice at {px}{py}{pz}");
                         Projectile.Throw(new Debris() { BlockId = Block.Ice }, lvl, new Vec3F32((float)px, (float)py, (float)pz), new Vec3F32((float)(rnd.NextDouble()* rndDirection* 0.5f), 0.5f, (float)(rnd.NextDouble()*rndDirection * 0.5f)), 0.5f);
-                        //lvl.Blockchange((ushort)px, (ushort)py, (ushort)pz, Block.Ice);
                     }
 
           
         }
-        public Icebomb (): base()//(Level level, Vec3F32 Position, Vec3F32 Velocity, PVPPlayer Thrower = null) : base (level, Position, Velocity, Thrower)
+        public Icebomb (): base()
         {
             BlockId = 256 + 489;
         }

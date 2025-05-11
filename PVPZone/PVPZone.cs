@@ -2,7 +2,6 @@
 using PVPZone.Game.Commands;
 using PVPZone.Game.Gamemodes;
 using PVPZone.Game.Item;
-using PVPZone.Game.Map;
 using PVPZone.Game.Player;
 using PVPZone.Game.Projectile;
 using System.IO;

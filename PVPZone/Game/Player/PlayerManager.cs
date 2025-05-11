@@ -1,6 +1,5 @@
 ﻿using MCGalaxy;
 using MCGalaxy.Events.PlayerEvents;
-using MCGalaxy.Network;
 using MCGalaxy.Tasks;
 using PVPZone.Game.Item;
 using PVPZone.Game.Projectile;
@@ -13,25 +12,27 @@ namespace PVPZone.Game.Player
         public static SchedulerTask Task;
         public static void Load()
         {
-            MCGalaxy.Events.PlayerEvents.OnPlayerConnectEvent.Register(PlayerJoin, MCGalaxy.Priority.High);
-            MCGalaxy.Events.PlayerEvents.OnPlayerDisconnectEvent.Register(PlayerDisconnect, MCGalaxy.Priority.High);
-            MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Register(PlayerClick, MCGalaxy.Priority.Normal);
-            MCGalaxy.Events.PlayerEvents.OnPlayerSpawningEvent.Register(PlayerSpawn, MCGalaxy.Priority.Normal);
-            MCGalaxy.Events.PlayerEvents.OnPlayerDiedEvent.Register(PlayerDie, MCGalaxy.Priority.Normal);
-            MCGalaxy.Events.PlayerEvents.OnSentMapEvent.Register(PlayerSentMap, MCGalaxy.Priority.Normal);
-            MCGalaxy.Events.PlayerEvents.OnBlockChangingEvent.Register(PlayerChangingBlock, MCGalaxy.Priority.Normal);
+            OnPlayerConnectEvent.Register(PlayerJoin, MCGalaxy.Priority.High);
+            OnPlayerDisconnectEvent.Register(PlayerDisconnect, MCGalaxy.Priority.High);
+            OnPlayerClickEvent.Register(PlayerClick, MCGalaxy.Priority.Normal);
+            OnPlayerSpawningEvent.Register(PlayerSpawn, MCGalaxy.Priority.Normal);
+            OnPlayerDiedEvent.Register(PlayerDie, MCGalaxy.Priority.Normal);
+            OnSentMapEvent.Register(PlayerSentMap, MCGalaxy.Priority.Normal);
+            OnBlockChangingEvent.Register(PlayerChangingBlock, MCGalaxy.Priority.High);
+            OnJoinedLevelEvent.Register(PlayerJoinedLevel, Priority.High);
 
             Task = Server.MainScheduler.QueueRepeat(PlayerTick, null, TimeSpan.FromMilliseconds(100));
         }
         public static void Unload()
         {
-            MCGalaxy.Events.PlayerEvents.OnPlayerConnectEvent.Unregister(PlayerJoin);
-            MCGalaxy.Events.PlayerEvents.OnPlayerDisconnectEvent.Unregister(PlayerDisconnect);
-            MCGalaxy.Events.PlayerEvents.OnPlayerClickEvent.Unregister(PlayerClick);
-            MCGalaxy.Events.PlayerEvents.OnPlayerSpawningEvent.Unregister(PlayerSpawn);
-            MCGalaxy.Events.PlayerEvents.OnPlayerDiedEvent.Unregister(PlayerDie);
-            MCGalaxy.Events.PlayerEvents.OnSentMapEvent.Unregister(PlayerSentMap);
-            MCGalaxy.Events.PlayerEvents.OnBlockChangingEvent.Unregister(PlayerChangingBlock);
+            OnPlayerConnectEvent.Unregister(PlayerJoin);
+            OnPlayerDisconnectEvent.Unregister(PlayerDisconnect);
+            OnPlayerClickEvent.Unregister(PlayerClick);
+            OnPlayerSpawningEvent.Unregister(PlayerSpawn);
+            OnPlayerDiedEvent.Unregister(PlayerDie);
+            OnSentMapEvent.Unregister(PlayerSentMap);
+            OnBlockChangingEvent.Unregister(PlayerChangingBlock);
+            OnJoinedLevelEvent.Unregister(PlayerJoinedLevel);
 
            Server.MainScheduler.Cancel(Task);
         }
@@ -56,11 +57,40 @@ namespace PVPZone.Game.Player
         }
         private static void PlayerChangingBlock(MCGalaxy.Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
         {
-            if (Util.IsPVPLevel(p.level))
+            if (!Util.CanBreakBlocks(p.level) && !placing)
+            {
+                p.RevertBlock(x, y, z);
+                cancel = true;
+                return;
+            }
+            if (p.Game.Referee || block == Block.Air)
+                return;
+
+            if (!Util.IsPVPLevel(p.level))
+                return;
+            
+            if (ItemManager.Items.ContainsKey(block) && !ItemManager.Items[block].Placeable)
             {
                 cancel = true;
-                p.RevertBlock(x,y,z);
+                p.RevertBlock(x, y, z);
+                return;   
             }
+
+            if (Util.IsNoInventoryLevel(p.level))
+                return;
+
+            PVPPlayer pvppl = PVPPlayer.Get(p);
+
+            if (pvppl == null) return;
+
+            if (pvppl.Inventory.Has(block))
+            {
+                pvppl.Inventory.Remove(block);
+                return;
+            }
+            cancel = true;
+            p.RevertBlock(x, y, z);
+            
         }
         private static void PlayerDie(MCGalaxy.Player player, BlockID cause, ref TimeSpan cooldown)
         {
@@ -92,24 +122,17 @@ namespace PVPZone.Game.Player
         }
         private static void SendMiningUnbreakableMessage(MCGalaxy.Player p)
         {
-            if (!Util.IsPVPLevel(p.level)) return;
-            bool extBlocks = p.Session.hasExtBlocks;
-            int count = p.Session.MaxRawBlock + 1;
-            int size = extBlocks ? 5 : 4;
-            byte[] bulk = new byte[count * size];
-            Level level = p.level;
-            for (int i = 0; i < count; i++)
-            {
-                bool canPlace = p.Game.Referee;
-                bool canBreak = p.Game.Referee;
-          
-                Packet.WriteBlockPermission((BlockID)i, i != 0 ? canPlace : true, i == 0 ? true : canBreak, p.Session.hasExtBlocks, bulk, i * size);
-            }
-            p.Send(bulk);
+            var pvppl = PVPPlayer.Get(p);
+            if (pvppl != null)
+                pvppl.Inventory.SendCanPlaceBreak();
         }
         private static void PlayerSentMap(MCGalaxy.Player p, Level prevLevel, Level level)
         {
             SendMiningUnbreakableMessage(p);
+            ProjectileManager.SendProjectileData(p);
+        }
+        private static void PlayerJoinedLevel(MCGalaxy.Player p, Level prevLevel, Level level, ref bool announce)
+        {
             ProjectileManager.SendProjectileData(p);
         }
         private static void PlayerTick(SchedulerTask task)

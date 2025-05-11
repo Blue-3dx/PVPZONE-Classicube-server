@@ -9,9 +9,12 @@ namespace PVPZone.Game.Projectile.Projectiles
         static System.Random rnd = new System.Random();
         public override void OnCollide(PVPPlayer player)
         {
-            Vec3U16 blockPos = Util.Round(Position);
-            Util.Effect(Level, "explosion", blockPos.X, blockPos.Y, blockPos.Z);
+            Vec3U16 blockPos = BlockPosition;
+
             Util.Effect(Level, effects[rnd.Next(0, effects.Length - 1)], blockPos.X, blockPos.Y, blockPos.Z);
+
+            Util.SpawnExplosion(Level, blockPos.X, blockPos.Y, blockPos.Z, 3, true, Thrower);
+
             if (player == null) return;
             player.Knockback(this.Velocity.X, 2f, this.Velocity.Z, 1.5f);
             player.Damage(new DamageReason(DamageReason.DamageType.Explosion, 15, player, Thrower));

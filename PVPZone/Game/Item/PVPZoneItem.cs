@@ -8,6 +8,9 @@ namespace PVPZone.Game.Item
     {
         public bool RemoveOnUse = false;
 
+        public bool Placeable = false;
+        public bool Breakable = false;
+
         public int  XPLevelRequired = 0;
 
         public int Damage = 1;

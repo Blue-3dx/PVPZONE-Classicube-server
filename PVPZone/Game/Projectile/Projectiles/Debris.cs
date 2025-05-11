@@ -1,5 +1,4 @@
-﻿using PVPZone.Game.Map;
-using PVPZone.Game.Player;
+﻿using PVPZone.Game.Player;
 using System;
 
 namespace PVPZone.Game.Projectile.Projectiles

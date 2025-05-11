@@ -1,7 +1,6 @@
 ﻿using System;
 using MCGalaxy;
 using MCGalaxy.Maths;
-using PVPZone.Game.Map;
 using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile
@@ -104,10 +103,6 @@ namespace PVPZone.Game.Projectile
             PositionLast = blockPos;
 
             Position += Velocity;
-
-         
-
-
 
             UpdatePos = true;
 

@@ -102,6 +102,8 @@ namespace PVPZone.Game.Projectile
             if (hit != null)
             {
                 OnCollide(PVPPlayer.Get(hit));
+                if (DestroyOnContact)
+                    return !DestroyOnContact;
             }
 
             PositionLast = blockPos;

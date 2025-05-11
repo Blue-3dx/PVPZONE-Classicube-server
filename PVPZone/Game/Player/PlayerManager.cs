@@ -1,9 +1,7 @@
 ﻿using MCGalaxy;
 using MCGalaxy.Events.PlayerEvents;
-using MCGalaxy.Network;
 using MCGalaxy.Tasks;
 using PVPZone.Game.Item;
-using PVPZone.Game.Map;
 using PVPZone.Game.Projectile;
 using System;
 using BlockID = System.UInt16;

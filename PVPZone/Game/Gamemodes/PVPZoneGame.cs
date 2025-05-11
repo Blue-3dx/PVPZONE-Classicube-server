@@ -87,7 +87,7 @@ namespace PVPZone.Game.Gamemodes
 
             UpdateMapConfig();
 
-            ProjectileManager.ClearMap(Map);
+            Util.ClearCustomMapData(Map);
 
             KillLeaderboard.Clear();
 

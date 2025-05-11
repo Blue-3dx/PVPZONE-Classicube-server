@@ -7,7 +7,8 @@ namespace PVPZone.Game.Projectile.Projectiles
     {
         public override void OnCollide(PVPPlayer player)
         {
-            Vec3U16 blockPos = Util.Round(Position);
+            Vec3U16 blockPos = BlockPosition;
+
             Util.Effect(Level, "explosion", blockPos.X, blockPos.Y, blockPos.Z);
             if (player == null)
                 return;

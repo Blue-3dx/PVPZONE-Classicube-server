@@ -45,10 +45,32 @@ namespace PVPZone.Game.Projectile
                 Vec3U16 lastBlockPos = prj.PositionLast;
 
                 if (Level.IsValidPos(lastBlockPos))
-                    sender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z));
+                    sender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.FastGetBlock(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z));
                 if (Level.IsValidPos(blockPos))
                     sender.Add(Level.PosToInt(blockPos.X, blockPos.Y, blockPos.Z), prj.BlockId);
             }
+        }
+        public void Clear()
+        {
+            SendResetBlocks();
+            Projectiles.Clear();
+        }
+        private void SendResetBlocks()
+        {
+            if (Level.players.Count <= 0) return;
+            BlockSender.count = 0;
+            foreach (var p in Projectiles.Items)
+            {
+                var blockpos = p.BlockPosition;
+
+                if (!Level.IsValidPos(blockpos))
+                    continue;
+
+                int blockPos = Level.PosToInt(blockpos.X, blockpos.Y, blockpos.Z);
+
+                BlockSender.Add(blockPos, Level.FastGetBlock(blockPos));
+            }
+            BlockSender.Flush();
         }
         public void Tick()
         {
@@ -72,7 +94,7 @@ namespace PVPZone.Game.Projectile
                 Vec3U16 lastBlockPos = projectile.PositionLast;
                 if (Level.IsValidPos(blockPos))
                 {
-                    BlockSender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.GetBlock(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z));
+                    BlockSender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.FastGetBlock(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z));
                     try
                     {
                         projectile.OnDestroy();
@@ -83,7 +105,7 @@ namespace PVPZone.Game.Projectile
                     }
                 }
                 if (Level.IsValidPos(lastBlockPos))
-                    BlockSender.Add(Level.PosToInt(blockPos.X, blockPos.Y, blockPos.Z), Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z));
+                    BlockSender.Add(Level.PosToInt(blockPos.X, blockPos.Y, blockPos.Z), Level.FastGetBlock(blockPos.X, blockPos.Y, blockPos.Z));
                 Projectiles.Remove(projectile);
                 i--;
             }

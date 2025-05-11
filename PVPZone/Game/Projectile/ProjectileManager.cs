@@ -25,6 +25,10 @@ namespace PVPZone.Game.Projectile
         }
         public static void ClearMap(Level level)
         {
+            if (!ProjectileLevels.ContainsKey(level))
+                return;
+
+            ProjectileLevels[level].Clear();
             ProjectileLevels.Remove(level);
         }
         public static void SendProjectileData(MCGalaxy.Player pl)

@@ -1,6 +1,7 @@
 ﻿using System;
 using MCGalaxy;
 using MCGalaxy.Maths;
+using PVPZone.Game.Map;
 using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile
@@ -17,6 +18,7 @@ namespace PVPZone.Game.Projectile
 
         public Vec3F32 Position;
         public Vec3U16 PositionLast;
+        public Vec3U16 BlockPosition { get { return Util.Round(Position); } }
 
         public Vec3F32 Velocity;
 
@@ -51,6 +53,14 @@ namespace PVPZone.Game.Projectile
         {
 
         }
+        private void DoDragGravity()
+        {
+            Velocity.X *= Drag;
+            Velocity.Y *= Drag;
+            Velocity.Z *= Drag;
+            Velocity.Y -= Gravity;
+        }
+
         public bool Tick()
         {
             if (DateTime.Now > Expire)
@@ -61,37 +71,43 @@ namespace PVPZone.Game.Projectile
 
             Vec3U16 blockPos = Util.Round(Position);
             Vec3U16 nextBlockPos = Util.Round(Position + Velocity);
-            ushort nextBlock = Level.GetBlock(nextBlockPos.X, nextBlockPos.Y, nextBlockPos.Z);
-            ushort currentBlock = Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z);
+
+            ushort nextBlock = Level.FastGetBlock(nextBlockPos.X, nextBlockPos.Y, nextBlockPos.Z);
+
+            ushort currentBlock = Level.FastGetBlock(blockPos.X, blockPos.Y, blockPos.Z);
+
+            ushort underNeathblock = (blockPos.Y > 0 && Level.IsValidPos(blockPos.X, blockPos.Y - 1, blockPos.Z)) ? Level.FastGetBlock(blockPos.X, (ushort)(blockPos.Y - 1), blockPos.Z) : Block.Invalid;
 
             if (nextBlock == Block.Invalid || currentBlock == Block.Invalid)
                 return false;
 
+            DoDragGravity();
+
             MCGalaxy.Player hit = Thrower != null ? Util.PlayerAt(Thrower.MCGalaxyPlayer, blockPos) : Util.PlayerAt(Level, blockPos);
-            if (hit != null)
-            {
-                OnCollide(PVPPlayer.Get(hit));
-                Moving = false;
-                return !DestroyOnContact;
-            }
+
 
             if (nextBlock != Block.Air)
             {
                 OnCollide(null);
-                Moving = false;
+                Moving = !DestroyOnContact && underNeathblock == Block.Air;
+                this.Velocity.X = 0;
+                this.Velocity.Z = 0;
                 //Velocity = new Vec3F32(0, 0, 0);
                 return !DestroyOnContact;
             }
-     
+
+            if (hit != null)
+            {
+                OnCollide(PVPPlayer.Get(hit));
+            }
+
             PositionLast = blockPos;
 
             Position += Velocity;
 
-            Velocity.X *= Drag;
-            Velocity.Y *= Drag;
-            Velocity.Z *= Drag;
+         
 
-            Velocity.Y -= Gravity;
+
 
             UpdatePos = true;
 

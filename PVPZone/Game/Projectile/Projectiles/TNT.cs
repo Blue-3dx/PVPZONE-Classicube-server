@@ -22,8 +22,8 @@ namespace PVPZone.Game.Projectile.Projectiles
         }
         public void Explode()
         {
-            Vec3U16 blockPos = Util.Round(Position);
-            Util.SpawnExplosion(this.Level, (int)blockPos.X, (int)blockPos.Y, (int)blockPos.Z, radius: 2, thrower: Thrower);
+            Vec3U16 blockPos = BlockPosition;
+            Util.SpawnExplosion(this.Level, (int)blockPos.X, (int)blockPos.Y, (int)blockPos.Z, radius: 5, thrower: Thrower, destroy:true);
             this.Destroy = true;
         }
 

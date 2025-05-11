@@ -2,6 +2,7 @@
 using MCGalaxy;
 using System.Collections.Generic;
 using PVPZone.Game.Item;
+using MCGalaxy.DB;
 namespace PVPZone.Game.Player
 {
     public class PVPPlayerInventory
@@ -30,6 +31,35 @@ namespace PVPZone.Game.Player
                 x++;
             }
         }
+        public void SendCanPlaceBreak()
+        {
+            var p = this.pl.MCGalaxyPlayer;
+
+            if (!Util.IsPVPLevel(p.level)) return;
+
+            bool extBlocks = p.Session.hasExtBlocks;
+            int count = p.Session.MaxRawBlock + 1;
+            int size = extBlocks ? 5 : 4;
+            byte[] bulk = new byte[count * size];
+            Level level = p.level;
+            for (ushort i = 0; i < count; i++)
+            {
+                bool canPlaceItem = (Has(i) && (ItemManager.Items.ContainsKey(i) ? ItemManager.Items[i].Placeable : true));
+                bool canBreakItem = (ItemManager.Items.ContainsKey(i) ? ItemManager.Items[i].Breakable : false);
+
+                bool canPlace = p.Game.Referee || canPlaceItem;
+                bool canBreak = p.Game.Referee || canBreakItem;
+
+                if (i == 0)
+                {
+                    canPlace = true;//Util.CanBreakBlocks(pl.MCGalaxyPlayer.level);
+                    canBreak = true;// Util.CanBreakBlocks(pl.MCGalaxyPlayer.level);
+                }
+
+                Packet.WriteBlockPermission((ushort)i, canPlace, canBreak, p.Session.hasExtBlocks, bulk, i * size);
+            }
+            p.Send(bulk);
+        }
         public void Remove(ushort blockId, int amount = 1)
         {
             if (!Inventory.ContainsKey(blockId))
@@ -39,10 +69,13 @@ namespace PVPZone.Game.Player
             {
                 Inventory.Remove(blockId);
                 SendInventoryOrder();
+                SendCanPlaceBreak();
+                pl.GuiHeldBlock();
                 return;
             }
 
             Inventory[blockId] -= amount;
+            pl.GuiHeldBlock();
         }
         public void Add(ItemManager.PVPZoneItems item, int amount = 1)
         {
@@ -60,10 +93,13 @@ namespace PVPZone.Game.Player
             {
                 Inventory.Add(blockId, amount);
                 SendInventoryOrder();
+                SendCanPlaceBreak();
+                pl.GuiHeldBlock();
                 return;
             }
 
             Inventory[blockId] += amount;
+            pl.GuiHeldBlock();
         }
 
         public void Clear()
@@ -72,6 +108,7 @@ namespace PVPZone.Game.Player
                 return;
             Inventory.Clear();
             SendInventoryOrder();
+            SendCanPlaceBreak();
         }
 
         public int Get(ushort blockId)

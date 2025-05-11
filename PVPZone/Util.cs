@@ -6,6 +6,7 @@ using PVPZone.Game.Projectile;
 using PVPZone.Game.Projectile.Projectiles;
 using PVPZone.Game.Gamemodes;
 using PVPZone.Game.Player;
+using PVPZone.Game.Map;
 
 namespace PVPZone
 {
@@ -19,6 +20,11 @@ namespace PVPZone
         {
             return level.Config.MOTD.Contains("-inventory");
         }
+        public static bool CanBreakBlocks(Level level)
+        {
+            return level.CanDelete && (!IsPVPLevel(level));
+        }
+
         public static Vec3U16 Round(Vec3F32 v)
         {
             unchecked { return new Vec3U16((ushort)Math.Round(v.X), (ushort)Math.Round(v.Y), (ushort)Math.Round(v.Z)); }
@@ -94,26 +100,28 @@ namespace PVPZone
                     for (int z = -radius; z <= radius; z++)
                     {
                         int px = cx + x, py = cy + y, pz = cz + z;
+                        if (Math.Abs(x) + Math.Abs(y) + Math.Abs(z) > radius) continue;
                         MCGalaxy.Player pl = Util.PlayerAt(level, px, py, pz);
                         if (pl == null)
                             continue;
                         PVPPlayer pvpPl = PVPPlayer.Get(pl);
                         if (pvpPl == null)
                             continue;
-                        float distance = ((Math.Abs(x) + Math.Abs(y) + Math.Abs(z)) / radius);
-                        int damage = (int)(distance * 10);
+                        float distance = (float)( (float)(radius - (Math.Abs(x) + Math.Abs(y) + Math.Abs(z))) / radius);
+                        int damage = (int)( distance * 10f);
                         pvpPl.Damage(new DamageReason(DamageReason.DamageType.Explosion, damage, pvpPl, thrower));
                         pvpPl.Knockback(x / radius, y / radius, z / radius, distance * 2);
                     }
-            Util.ExplosionEffect(level, cx, cy, cz, radius, destroy);
+            Util.ExplosionEffect(level, cx, cy, cz, radius, destroy,thrower);
         }
-        public static void ExplosionEffect(Level lvl, int cx, int cy, int cz, ushort radius = 1, bool destroy=false)
+        public static void ExplosionEffect(Level lvl, int cx, int cy, int cz, ushort radius = 1, bool destroy=false, PVPPlayer thrower=null)
         {
             for (int x = -radius; x <= radius; x++)
                 for (int y = -radius; y <= radius; y++) // cy to cy + 2, effectively cy-1 to cy+1
                     for (int z = -radius; z <= radius; z++)
                     {
                         int px = cx + x, py = cy + y, pz = cz + z;
+                        if (Math.Abs(x) + Math.Abs(y) + Math.Abs(z) > radius) continue;
                         if (!lvl.IsValidPos(px, py, pz)) continue;
                         ushort block = lvl.GetBlock((ushort)px, (ushort)py, (ushort)pz);
 
@@ -121,9 +129,10 @@ namespace PVPZone
                             continue;
 
                         if (destroy)
-                            lvl.SetBlock((ushort)px, (ushort)py, (ushort)pz, Block.Air);
+                            lvl.TryChangeBlock(MCGalaxy.Player.Console, (ushort)px, (ushort)py, (ushort)pz, Block.Air);
+                            //lvl.SetBlock((ushort)px, (ushort)py, (ushort)pz, Block.Air);
 
-                        Projectile.Throw(new Debris() { BlockId = block}, lvl, new Vec3F32((float)px, (float)py+2, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.4f), 0.5f + (float)(rnd.NextDouble()* 0.25f), (float)(rnd.NextDouble() * rndDirection * 0.4f)), 0.5f);
+                        Projectile.Throw(new Debris() { BlockId = block, Thrower = thrower, PlaceOnDestroy = destroy }, lvl, new Vec3F32((float)px, (float)py+2, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.4f), 0.5f + (float)(rnd.NextDouble()* 0.25f), (float)(rnd.NextDouble() * rndDirection * 0.4f)), 0.5f);
                     }
         }
 
@@ -193,6 +202,11 @@ namespace PVPZone
 
             if (p.Extras.Contains("spectator"))
                 p.Extras.Remove("spectator");
+        }
+
+        public static void ClearCustomMapData(Level level)
+        {
+            ProjectileManager.ClearMap(level);
         }
     }
 }

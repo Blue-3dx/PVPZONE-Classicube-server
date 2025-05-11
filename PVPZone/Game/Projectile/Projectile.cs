@@ -43,6 +43,10 @@ namespace PVPZone.Game.Projectile
         {
 
         }
+        public virtual void OnDestroy()
+        {
+
+        }
         public virtual void OnClick(PVPPlayer clicker)
         {
 
@@ -73,16 +77,11 @@ namespace PVPZone.Game.Projectile
 
             if (nextBlock != Block.Air)
             {
-                //Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
                 OnCollide(null);
                 Moving = false;
+                //Velocity = new Vec3F32(0, 0, 0);
                 return !DestroyOnContact;
             }
-            //Level.BroadcastRevert(PositionLast.X, PositionLast.Y, PositionLast.Z);
-
-    
-            
-            //Level.BroadcastChange(blockPos.X, blockPos.Y, blockPos.Z, BlockId);
      
             PositionLast = blockPos;
 

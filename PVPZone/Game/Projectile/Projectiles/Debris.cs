@@ -1,4 +1,5 @@
-﻿using PVPZone.Game.Player;
+﻿using System;
+using PVPZone.Game.Player;
 
 namespace PVPZone.Game.Projectile.Projectiles
 {
@@ -6,18 +7,16 @@ namespace PVPZone.Game.Projectile.Projectiles
     {
         public override void OnCollide(PVPPlayer player)
         {
+            this.Expire = DateTime.Now.AddSeconds(1);
+
             if (player == null) return;
             player.Knockback(this.Velocity.X, 2f, this.Velocity.Z, 1.5f);
             player.Damage(new DamageReason(DamageReason.DamageType.Debris, 5, player, Thrower));
             player.DamageEffect();
         }
-        public override void OnTick()
-        {
-        
-        }
         public Debris() : base()
         {
-
+            this.DestroyOnContact = false;
         }
     }
 }

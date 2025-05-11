@@ -36,6 +36,9 @@ namespace PVPZone.Game.Player
         public int HealthGolden = 0;
         public int Hunger = MCGalaxy.PVPZone.Config.Player.MaxHunger;
 
+        DateTime nextUpdateHealthBar = DateTime.Now;
+        bool updateHealthbar = false;
+
         public bool Spectator { get { return PVPZoneGame.Instance.RoundInProgress && PVPZoneGame.Instance.Map == MCGalaxyPlayer.Level && !PVPZoneGame.Instance.AlivePlayers.Contains(MCGalaxyPlayer); } }
         public bool Dead { get { return Health <= 0 || Spectator || !respawned; } }
         public bool Exhausted { get { return Hunger < MCGalaxy.PVPZone.Config.Player.HungerExhausted; } }
@@ -298,14 +301,16 @@ namespace PVPZone.Game.Player
             if (PVPZoneGame.Instance.Map == MCGalaxyPlayer.level && !PVPZoneGame.Instance.AlivePlayers.Contains(MCGalaxyPlayer))
                 return;
 
+            int damage = damageHandler.Amount;
             if (HealthGolden > 0)
             {
-                HealthGolden -= damageHandler.Amount;
-                GuiHealthExtra();
-                return;
+                HealthGolden -= damage;
+                GuiHealthExtra(damage);
+                if (HealthGolden >= 0) return;
+                damage = -HealthGolden;
             }
 
-            Health -= damageHandler.Amount;
+            Health -= damage;
 
             if (Health <= 0)
             {
@@ -313,7 +318,7 @@ namespace PVPZone.Game.Player
                 return;
             }
 
-            GuiHealth();
+            GuiHealth(damage);
         }
         public void Heal(int amount)
         {
@@ -323,7 +328,7 @@ namespace PVPZone.Game.Player
             if (Health >= MCGalaxy.PVPZone.Config.Player.MaxHealth)
                 Health = MCGalaxy.PVPZone.Config.Player.MaxHealth;
 
-            GuiHealth();
+            GuiHealth(amount);
         }
         public void HealGolden(int amount)
         {
@@ -368,17 +373,29 @@ namespace PVPZone.Game.Player
             GuiHunger();
             GuiHeldBlock();
         }
-        public void GuiHealth()
+        public void GuiHealth(int flashaomunt=0)
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight1, Util.HealthBar("♥", this.Health, MCGalaxy.PVPZone.Config.Player.MaxHealth));
+            int amount = this.Health;
+            if (flashaomunt > 0)
+            {
+                this.updateHealthbar = true;
+                this.nextUpdateHealthBar = DateTime.Now.AddMilliseconds(600);
+            }
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight1, Util.HealthBar("♥", amount+flashaomunt, MCGalaxy.PVPZone.Config.Player.MaxHealth,flashaomunt));
         }
         public void GuiHunger()
         {
            // MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight3, Util.HealthBar("←", this.Hunger, MCGalaxy.PVPZone.Config.Player.MaxHunger));
         }
-        public void GuiHealthExtra()
+        public void GuiHealthExtra(int flashaomunt = 0)
         {
-            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, this.HealthGolden != 0 ? Util.HealthBar("↨", this.HealthGolden, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden) : "");
+            int amount = this.HealthGolden;
+            if (flashaomunt > 0)
+            {
+                this.updateHealthbar = true;
+                this.nextUpdateHealthBar = DateTime.Now.AddMilliseconds(600);
+            }
+            MCGalaxyPlayer.SendCpeMessage(CpeMessageType.BottomRight2, this.HealthGolden != 0 ? Util.HealthBar("↨", amount+flashaomunt, MCGalaxy.PVPZone.Config.Player.MaxHealthGolden, flashaomunt) : "");
         }
         public void GuiHeldBlock()
         {
@@ -396,6 +413,12 @@ namespace PVPZone.Game.Player
             {
                 lastHeldBlock = HeldBlock;
                 GuiHeldBlock();
+            }
+            if (updateHealthbar && DateTime.Now > nextUpdateHealthBar)
+            {
+                GuiHealth();
+                GuiHealthExtra();
+                updateHealthbar = false;
             }
             /*if (DateTime.Now > nextHunger)
             {

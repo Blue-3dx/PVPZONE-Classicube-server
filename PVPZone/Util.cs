@@ -85,7 +85,29 @@ namespace PVPZone
         static System.Random rnd = new System.Random();
 
         static int rndDirection { get { return rnd.Next(0, 2) == 1 ? -1 : 1; } }
-        public static void FakeExplosionEffect(Level lvl, int cx, int cy, int cz, ushort radius = 1)
+
+        public static void SpawnExplosion(Level level, int cx, int cy, int cz, ushort radius=2, bool destroy = false, PVPPlayer thrower=null)
+        {
+            Util.Effect(level, "explosion", cx, cy, cz);
+            for (int x = -radius; x <= radius; x++)
+                for (int y = -radius; y <= radius; y++)
+                    for (int z = -radius; z <= radius; z++)
+                    {
+                        int px = cx + x, py = cy + y, pz = cz + z;
+                        MCGalaxy.Player pl = Util.PlayerAt(level, px, py, pz);
+                        if (pl == null)
+                            continue;
+                        PVPPlayer pvpPl = PVPPlayer.Get(pl);
+                        if (pvpPl == null)
+                            continue;
+                        float distance = ((Math.Abs(x) + Math.Abs(y) + Math.Abs(z)) / radius);
+                        int damage = (int)(distance * 10);
+                        pvpPl.Damage(new DamageReason(DamageReason.DamageType.Explosion, damage, pvpPl, thrower));
+                        pvpPl.Knockback(x / radius, y / radius, z / radius, distance * 2);
+                    }
+            Util.ExplosionEffect(level, cx, cy, cz, radius, destroy);
+        }
+        public static void ExplosionEffect(Level lvl, int cx, int cy, int cz, ushort radius = 1, bool destroy=false)
         {
             for (int x = -radius; x <= radius; x++)
                 for (int y = -radius; y <= radius; y++) // cy to cy + 2, effectively cy-1 to cy+1
@@ -94,8 +116,12 @@ namespace PVPZone
                         int px = cx + x, py = cy + y, pz = cz + z;
                         if (!lvl.IsValidPos(px, py, pz)) continue;
                         ushort block = lvl.GetBlock((ushort)px, (ushort)py, (ushort)pz);
+
                         if (block == Block.Air || block== Block.Invalid)
                             continue;
+
+                        if (destroy)
+                            lvl.SetBlock((ushort)px, (ushort)py, (ushort)pz, Block.Air);
 
                         Projectile.Throw(new Debris() { BlockId = block}, lvl, new Vec3F32((float)px, (float)py+2, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.4f), 0.5f + (float)(rnd.NextDouble()* 0.25f), (float)(rnd.NextDouble() * rndDirection * 0.4f)), 0.5f);
                     }
@@ -123,10 +149,13 @@ namespace PVPZone
             }
         }
 
-        public static string HealthBar(string symbol, int amount, int max)
+        public static string HealthBar(string symbol, int amount, int max, int flashamount=0, string flashSymbol= "↕")// "‼")
         {
             string bar = "%f";
-            for (int i = 0; i < amount; i++) bar += symbol;
+
+            int endIndex = amount - flashamount;
+            for (int i = 0; i < endIndex; i++) bar += symbol;
+            for (int i = endIndex; i < amount; i++) bar += flashSymbol;
             bar += "%0";
             for (int i = amount; i < max; i++) bar += symbol;// (i < amount) ? symbol : "%0" + symbol;
             return bar;

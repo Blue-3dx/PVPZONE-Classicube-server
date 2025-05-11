@@ -19,7 +19,7 @@ namespace PVPZone.Game.Player
             MCGalaxy.Events.PlayerEvents.OnPlayerSpawningEvent.Register(PlayerSpawn, MCGalaxy.Priority.Normal);
             MCGalaxy.Events.PlayerEvents.OnPlayerDiedEvent.Register(PlayerDie, MCGalaxy.Priority.Normal);
             MCGalaxy.Events.PlayerEvents.OnSentMapEvent.Register(PlayerSentMap, MCGalaxy.Priority.Normal);
-            MCGalaxy.Events.PlayerEvents.OnBlockChangingEvent.Register(PlayerChangingBlock, MCGalaxy.Priority.Normal);
+            MCGalaxy.Events.PlayerEvents.OnBlockChangingEvent.Register(PlayerChangingBlock, MCGalaxy.Priority.High);
 
             Task = Server.MainScheduler.QueueRepeat(PlayerTick, null, TimeSpan.FromMilliseconds(100));
         }
@@ -56,11 +56,34 @@ namespace PVPZone.Game.Player
         }
         private static void PlayerChangingBlock(MCGalaxy.Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
         {
-            if (Util.IsPVPLevel(p.level))
+            if (p.Game.Referee || block == Block.Air)
+                return;
+
+            if (!Util.IsPVPLevel(p.level))
+                return;
+            
+            if (ItemManager.Items.ContainsKey(block) && !ItemManager.Items[block].Placeable)
             {
                 cancel = true;
-                p.RevertBlock(x,y,z);
+                p.RevertBlock(x, y, z);
+                return;   
             }
+
+            if (Util.IsNoInventoryLevel(p.level))
+                return;
+
+            PVPPlayer pvppl = PVPPlayer.Get(p);
+
+            if (pvppl == null) return;
+
+            if (pvppl.Inventory.Has(block))
+            {
+                pvppl.Inventory.Remove(block);
+                return;
+            }
+            cancel = true;
+            p.RevertBlock(x, y, z);
+            
         }
         private static void PlayerDie(MCGalaxy.Player player, BlockID cause, ref TimeSpan cooldown)
         {

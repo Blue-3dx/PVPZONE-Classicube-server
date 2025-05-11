@@ -71,10 +71,19 @@ namespace PVPZone.Game.Projectile
                 Vec3U16 blockPos = Util.Round(projectile.Position);
                 Vec3U16 lastBlockPos = projectile.PositionLast;
                 if (Level.IsValidPos(blockPos))
+                {
                     BlockSender.Add(Level.PosToInt(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z), Level.GetBlock(lastBlockPos.X, lastBlockPos.Y, lastBlockPos.Z));
+                    try
+                    {
+                        projectile.OnDestroy();
+                    }
+                    catch(Exception e)
+                    {
+                        MCGalaxy.Player.Console.Message(e.ToString());
+                    }
+                }
                 if (Level.IsValidPos(lastBlockPos))
                     BlockSender.Add(Level.PosToInt(blockPos.X, blockPos.Y, blockPos.Z), Level.GetBlock(blockPos.X, blockPos.Y, blockPos.Z));
-            
                 Projectiles.Remove(projectile);
                 i--;
             }

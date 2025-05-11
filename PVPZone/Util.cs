@@ -6,7 +6,6 @@ using PVPZone.Game.Projectile;
 using PVPZone.Game.Projectile.Projectiles;
 using PVPZone.Game.Gamemodes;
 using PVPZone.Game.Player;
-using PVPZone.Game.Map;
 
 namespace PVPZone
 {

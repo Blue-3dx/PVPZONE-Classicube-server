@@ -132,7 +132,7 @@ namespace PVPZone
                             lvl.TryChangeBlock(MCGalaxy.Player.Console, (ushort)px, (ushort)py, (ushort)pz, Block.Air);
                             //lvl.SetBlock((ushort)px, (ushort)py, (ushort)pz, Block.Air);
 
-                        Projectile.Throw(new Debris() { BlockId = block, Thrower = thrower, PlaceOnDestroy = destroy }, lvl, new Vec3F32((float)px, (float)py+2, (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.4f), 0.5f + (float)(rnd.NextDouble()* 0.25f), (float)(rnd.NextDouble() * rndDirection * 0.4f)), 0.5f);
+                        Projectile.Throw(new Debris() { BlockId = block, Thrower = thrower, PlaceOnDestroy = destroy }, lvl, new Vec3F32((float)px, (float)py + (!destroy ? 2 : 0), (float)pz), new Vec3F32((float)(rnd.NextDouble() * rndDirection * 0.4f), 0.5f + (float)(rnd.NextDouble()* 0.25f), (float)(rnd.NextDouble() * rndDirection * 0.4f)), 0.5f);
                     }
         }
 

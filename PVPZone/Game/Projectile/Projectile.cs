@@ -87,8 +87,12 @@ namespace PVPZone.Game.Projectile
 
             if (nextBlock != Block.Air)
             {
-                OnCollide(null);
                 Moving = !DestroyOnContact && underNeathblock == Block.Air;
+                if (!Moving)
+                {
+                    OnCollide(null);
+                    return !DestroyOnContact;
+                }
                 this.Velocity.X = 0;
                 this.Velocity.Z = 0;
                 //Velocity = new Vec3F32(0, 0, 0);
